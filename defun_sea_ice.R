@@ -70,7 +70,7 @@ defun_sea_ice <- function(sea="Baltic_Sea",
               "Cook_Inlet") 
 
   # Separating day and year
-  masie_tmp <- extract(masie, yyyyddd, into = c("Year", "Day"), "(.{4})(.{3})", remove=FALSE)
+  masie_tmp <- tidyr::extract(masie, yyyyddd, into = c("Year", "Day"), "(.{4})(.{3})", remove=FALSE)
 
   # Selecting the columns of interest
   sea_select <- c("Year", "Day", sea_of_interest)
