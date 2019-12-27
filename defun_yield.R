@@ -13,16 +13,26 @@ gc()
 #################################################
 # Function
 defun_yield <- function(closing_date="2020-12-31",
-                        start_date=2013, # < than this year, for analysis
+                        begin_year=2013, # > than this year, for analysis
                         trading_days=7, 
                         bin1=0.0, 
                         bin2=2.0, 
                         bin3=2.5, 
                         bin4=3.0,
-                        code="Y30Y") {
-    
+                        probability_type="simple",
+                        prob_results_title="Treasury Yields for 30 Year",
+    # If you want a graph, indicate and add info
+                        print_graph="yes",
+                        title="Treasury Yields for 30 Year",
+                        subtitle="",
+                        info_source="U.S. Treasury",
+                        file_name="treasury",
+                        graph_width=1250,
+                        graph_height=450,
+    # Script does analysis for only one Treasury Yield at a time.                    
     # Yield Codes:  Y1M = 1 Month Yield, Y2M = 2 Month Yield Y3M, Y6M, 
-    # Y1Y = 1 Year Yield, Y2Y, Y3Y, Y5Y, Y7Y, Y10Y, Y20Y, Y30Y 
+    # Y1Y = 1 Year Yield, Y2Y, Y3Y, Y5Y, Y7Y, Y10Y, Y20Y, Y30Y                       
+                        treasury_code="Y30Y") {
 
   #################################################
   # Libraries
@@ -33,15 +43,18 @@ defun_yield <- function(closing_date="2020-12-31",
   library(xml2)
   library(lubridate)
   library(dplyr)
+  
+  # Sources frequently called forecasting functions
+  source("defun_graph.R")
+  source("defun_simple_probability.R")
     
+  #################################################
+  # Import & Parse Treasury Data
+  # Point to time series data file and import it.
   # Last 4 digits are year, retrieves years > than start_date
   yurl = paste0("http://data.treasury.gov/feed.svc/DailyTreasuryYieldCurveRateData?",
                 "$filter=year(NEW_DATE)%20gt%20",
-                start_date)
-  
-  #################################################
-  # Import & Parse
-  # Point to time series data file and import it.
+                begin_year)  
 
   # Script testing with downloaded file
   # xmlobj <- read_xml("~/Downloads/DailyTreasuryYieldCurveRateData.xml")
@@ -49,7 +62,7 @@ defun_yield <- function(closing_date="2020-12-31",
   # Live script
   xmlobj <- read_xml(yurl)
   
-  df_yield <- data.frame( 
+  df <- data.frame( 
     id   = xml_find_all(xmlobj, ".//d:Id" ) %>% xml_attr( "id" ),
     date = xml_find_all(xmlobj, ".//d:NEW_DATE" ) %>% xml_text(),
     Y1M = xml_find_all(xmlobj, ".//d:BC_1MONTH" ) %>% xml_text(),
@@ -67,75 +80,33 @@ defun_yield <- function(closing_date="2020-12-31",
     Y30D = xml_find_all(xmlobj, ".//d:BC_30YEARDISPLAY" ) %>% xml_text(),
     stringsAsFactors = FALSE )
 
-  # All of this is to determine how many days until end of question
-  todays_date <- Sys.Date()
-  closing_date <- as.Date(closing_date)
-  remaining_weeks <- as.numeric(difftime(closing_date, todays_date, units = "weeks"))
-  remaining_weeks <- round(remaining_weeks, digits=0)
-  non_trading_days <- (7 - trading_days) * remaining_weeks
-  day_difference <- as.numeric(difftime(closing_date, todays_date))
-  remaining_days <- day_difference - non_trading_days 
-
-  #################################################
-  # Import & Parse
-  # Point to time series data file and import it.
-  time_import <- df_yield[,c("date", code)]
+  df <- df[,c("date", treasury_code)]
   
   # Changing column name to reuse time-series script
-  colnames(time_import) <- c("date", "value")
+  colnames(df) <- c("date", "value")
   
   # time_import$date <- as.numeric(gsub("[T,]", "", nasdaq$value))
   #  as.Date(time_import$date, "%Y-%m-%dT%h:%m:%s")
 
   # Clips off time and imports value as number
-  time_import$date <- as.Date(time_import$date)
-  time_import$value <- as.numeric(time_import$value) 
+  df$date <- as.Date(df$date)
+  df$value <- as.numeric(df$value) 
   
   # Puts into date decreasing order
-  time_import <- time_import[rev(order(as.Date(time_import$date), na.last = NA)),]
+  df <- df[rev(order(as.Date(df$date), na.last = NA)),]
   
   # Putting into vectors format
-  time_import$value <- as.vector(time_import$value) 
-  time_import$date <- as.Date(time_import$date)
-    
-  # Filter out old data
-  time_import <- filter(time_import, date > start_date)
-
-  # Setting most recent value, assuming descending data
-  current_value <- as.numeric(time_import[1,2])
-
-  # Get the length of time_import$value and shorten it by remaining_days
-  time_rows = length(time_import$value) - remaining_days
-
-  # Create a dataframe
-  time_calc <- NULL
-
-  # Iterate through value and subtract the difference 
-  # from the row remaining days away.
-  for (i in 1:time_rows) {
-    time_calc[i] <- time_import$value[i] - time_import$value[i+remaining_days]
-  }
-
-  # Adjusted against current values to match time_calc
-  adj_bin1 <- bin1 - current_value
-  adj_bin2 <- bin2 - current_value
-  adj_bin3 <- bin3 - current_value 
-  adj_bin4 <- bin4 - current_value 
-
-  # Empirically, how many trading days fall in each question bin?
-  prob1 <- round(sum(time_calc<adj_bin1)/length(time_calc), digits = 3)
-  prob2 <- round(sum(time_calc>=adj_bin1 & time_calc<=adj_bin2)/length(time_calc), digits = 3)
-  prob3 <- round(sum(time_calc>adj_bin2 & time_calc<adj_bin3)/length(time_calc), digits = 3)
-  prob4 <- round(sum(time_calc>=adj_bin3 & time_calc<=adj_bin4)/length(time_calc), digits = 3)
-  prob5 <- round(sum(time_calc>adj_bin4)/length(time_calc), digits = 3)
+  df$value <- as.vector(df$value) 
   
-  ###############################################
-  # Print results
-  return(cat(paste0(code, " Treasury Yield Probabilities for ", closing_date, ":\n", 
-                  prob1, ": Bin 1 - ", "<", bin1, "\n",
-                  prob2, ": Bin 2 - ", bin1, " to <=", bin2, "\n", 
-                  prob3, ": Bin 3 - ", bin2, "+ to <", bin3, "\n", 
-                  prob4, ": Bin 4 - ", bin3, " to <=", bin4, "\n", 
-                  prob5, ": Bin 5 - ", bin4, "+", "\n",
-                  "Number of observations: ", time_rows)))
+  #################################################
+  # Call desired forecasting functions
+  
+  if (probability_type == "simple")
+    defun_simple_probability(df, prob_results_title,
+                             closing_date, trading_days, 
+                             bin1, bin2, bin3, bin4)
+  
+  if (print_graph == "yes")
+    defun_graph(df, title, subtitle, info_source, file_name, 
+                graph_width, graph_height)
 }

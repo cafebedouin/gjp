@@ -20,7 +20,18 @@ defun_brent <- function(closing_date="2020-04-01",
                         bin1=63, 
                         bin2=69, 
                         bin3=200, 
-                        bin4=300) {
+                        bin4=300,
+                        probability_type="simple",
+                        prob_results_title="Brent Crude Oil Probablity Table ",
+  # If you want a graph, indicate and add info
+                        print_graph="yes",
+                        title="Brent Crude Oil Historical Prices",
+                        subtitle="",
+                        info_source="Source: U.S. Energy Information Administration",
+                        file_name="brent",
+                        graph_width=1250,
+                        graph_height=450) {                        
+                     
   
   #################################################
   # Libraries
@@ -34,15 +45,9 @@ defun_brent <- function(closing_date="2020-04-01",
   library(dplyr)
   library(httr)
   
-  # Determine how many days until end of question
-  todays_date <- Sys.Date()
-  start_date <- as.Date(start_date)
-  closing_date <- as.Date(closing_date)
-  remaining_weeks <- as.numeric(difftime(closing_date, todays_date, units = "weeks"))
-  remaining_weeks <- round(remaining_weeks, digits=0)
-  non_trading_days <- (7 - trading_days) * remaining_weeks
-  day_difference <- as.numeric(difftime(closing_date, todays_date))
-  remaining_days <- day_difference - non_trading_days 
+  # Sources frequently called forecasting functions
+  source("defun_graph.R")
+  source("defun_simple_probability.R")
   
   #################################################
   # Import & Parse
@@ -54,60 +59,33 @@ defun_brent <- function(closing_date="2020-04-01",
       write_disk(kludge), progress())
   
   # This should work whenever read_excel learns about the web
-  # time_import <- read_excel("http://www.eia.gov/dnav/pet/hist_xls/RBRTEd.xls", 
+  # df <- read_excel("http://www.eia.gov/dnav/pet/hist_xls/RBRTEd.xls", 
   #                           sheet = "Data 1")
   #
   # Uncomment for testing against downloaded file.
-  # time_import <- read_excel("~/Downloads/RBRTEd.xls", sheet = "Data 1")
+  # df <- read_excel("~/Downloads/RBRTEd.xls", sheet = "Data 1")
   
-  time_import <- read_excel(kludge, sheet = "Data 1")
-  time_import <- time_import[-c(1,2),]
-  colnames(time_import) <- c("date", "value")
+  df <- read_excel(kludge, sheet = "Data 1")
+  df <- df[-c(1,2),]
+  colnames(df) <- c("date", "value")
 
   # Cleaning up import
-  time_import$date <- as.numeric(time_import$date)
-  time_import$date <- as.Date(time_import$date, origin = "1899-12-30")
-  time_import$value <- as.vector(as.numeric(time_import$value))
-  time_import <- time_import[rev(order(time_import$date)),]   
+  df$date <- as.numeric(df$date)
+  df$date <- as.Date(df$date, origin = "1899-12-30")
+  df$value <- as.vector(as.numeric(df$value))
+  df <- df[rev(order(df$date)),]   
 
   # Filter out old data
-  time_import <- filter(time_import, date >= start_date)
+  df <- filter(df, date >= start_date)
   
-  # Setting most recent value, assuming descending data
-  current_value <- as.numeric(time_import[1,2])
-
-  # Get the length of time_import$value and shorten it by remaining_days
-  time_rows = length(time_import$value) - remaining_days
-
-  # Create a dataframe
-  time_calc <- NULL
-
-  # Iterate through value and subtract the difference 
-  # from the row remaining days away.
-  for (i in 1:time_rows) {
-    time_calc[i] <- time_import$value[i] - time_import$value[i+remaining_days]
-  }
-
-  # Adjusted against current values to match time_calc
-  adj_bin1 <- bin1 - current_value
-  adj_bin2 <- bin2 - current_value
-  adj_bin3 <- bin3 - current_value 
-  adj_bin4 <- bin4 - current_value 
-
-  # Empirically, how many trading days fall in each question bin?
-  prob1 <- round(sum(time_calc<adj_bin1)/length(time_calc), digits = 3)
-  prob2 <- round(sum(time_calc>=adj_bin1 & time_calc<=adj_bin2)/length(time_calc), digits = 3)
-  prob3 <- round(sum(time_calc>adj_bin2 & time_calc<adj_bin3)/length(time_calc), digits = 3)
-  prob4 <- round(sum(time_calc>=adj_bin3 & time_calc<=adj_bin4)/length(time_calc), digits = 3)
-  prob5 <- round(sum(time_calc>adj_bin4)/length(time_calc), digits = 3)
-
-  ###############################################
-  # Print results
-  return(cat(paste0("Brent Crude Oil Probabilities for ", closing_date, ":\n", 
-                    prob1, ": Bin 1 - ", "<", bin1, "\n",
-                    prob2, ": Bin 2 - ", bin1, " to <=", bin2, "\n", 
-                    prob3, ": Bin 3 - ", bin2, "+ to <", bin3, "\n", 
-                    prob4, ": Bin 4 - ", bin3, " to <=", bin4, "\n", 
-                    prob5, ": Bin 5 - ", bin4, "+", "\n",
-                    "Number of observations: ", time_rows)))
-}
+  #################################################
+  # Call desired forecasting functions
+  
+  if (probability_type == "simple")
+    defun_simple_probability(df, prob_results_title,
+                             closing_date, trading_days, 
+                             bin1, bin2, bin3, bin4)
+  if (print_graph == "yes")
+    defun_graph(df, title, subtitle, info_source, file_name, 
+                graph_width, graph_height)
+}  
