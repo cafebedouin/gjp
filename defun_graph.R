@@ -1,4 +1,4 @@
-# graph_fun.R 
+# defun_graph.R 
 #################################################
 # Description: Generates a graph from time series
 # using BBC style: https://bbc.github.io/rcookbook/
@@ -8,7 +8,13 @@ rm(list=ls()) # Clear memory
 gc()
 
 # Replace defaults in function to desired, or call the function from console
-graph_fun <- function(file_path="./data/pce-q.csv") {
+defun_graph <- function(df,
+                        title="",
+                        subtitle="",
+                        info_source="",
+                        file_name="default",
+                        graph_width=1250,
+                        graph_height=450) {
   
   #################################################
   # Load libraries. If library X is not installed
@@ -31,53 +37,32 @@ graph_fun <- function(file_path="./data/pce-q.csv") {
   
   # Hold date to add to file output
   run_date <- Sys.Date()
-  
-  data_import <- read.csv(file_path, header=FALSE) 
 
   # Adding column names, changing sea name to sea ice
-  colnames(data_import) <- c("Quarter", "Value")
-
-  # Check input
-  #View(data_import) } 
-  
-  #################################################
-  # Historic Trends Graph
-  graph_df <- data_import
-  
-  # These variables need to be numerical
-  # and changes date to ordered number
-  graph_df$Quarter <- as.numeric(graph_df$Quarter)
-  graph_df$Value <- as.numeric(graph_df$Value)
-  
-  # Check input
-  # View(graph_df) }
-  
-  # Filtering results into period of interest
-  # graph_df <- filter(graph_df, Day <= days_end)  
-  # graph_df <- filter(graph_df, Day >= days_start)
+  colnames(df) <- c("Date", "Value")
   
   #Make plot
-  line <- ggplot(graph_df, aes(x = Quarter, y = Value)) +
+  line <- ggplot(df, aes(x = Date, y = Value)) +
     geom_point(colour = "#1380A1", size = 1) +
     geom_hline(yintercept = 0, size = 8, colour="#333333") +
     bbc_style() +
-    labs(title="United States, Personal Consumption Expenditures Price Index",
-         subtitle = "Quarterly data: 1959 Q2 - 2019 Q3")
-  
-  
-  # Lays out ts_graph by day with a colored line for each year
-#  plot <- ggplot() + 
+    labs(title= title,
+         subtitle = subtitle)
+
+# Lays out ts_graph by day with a colored line for each year
+# plot <- ggplot() + 
 #    ggtitle(paste("Historical Quarterly Unemployment")) +
 #    geom_point(data = ts_graph, aes(x = Quarter, y = Value)) 
   
   finalise_plot(plot_name = line,
-                source = "Source: Bureau of Economic Analysis ",
-                save_filepath = "./output/quarterly_pce.png",
-                width_pixels = 1250,
-                height_pixels = 450,
+                source = info_source,
+                save_filepath = paste0("./output/", file_name,
+                                       "-", run_date, ".png"),
+                width_pixels = graph_width,
+                height_pixels = graph_height,
                 logo_image_path = "./branding/logo.png")
 
-#  ggsave(filename=paste0("./output/historical-quarterly-unemployment-graph", 
+#  ggsave(filename=paste0("./output/", file_name 
 #                         run_date, ".pdf"), plot=ts_plot)
 
 }
