@@ -18,9 +18,9 @@ gc()
   #################################################
   # Function
   time_series <- function(time_path="./data/gold-lmba.csv", 
-                        closing_date="2019-04-01", trading_days=5, 
-                         bin1=1220, bin2=1300, 
-                         bin3=1380, bin4=1460) {
+                          closing_date="2019-04-01", trading_days=5, 
+                          bin1=1220, bin2=1300, 
+                          bin3=1380, bin4=1460) {
 
   #################################################
   # Libraries
