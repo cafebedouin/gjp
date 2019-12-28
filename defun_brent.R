@@ -46,8 +46,8 @@ defun_brent <- function(closing_date="2020-04-01",
   library(httr)
   
   # Sources frequently called forecasting functions
-  source("defun_graph.R")
-  source("defun_simple_probability.R")
+  source("./functions/defun_graph.R")
+  source("./functions/defun_simple_probability.R")
   
   #################################################
   # Import & Parse

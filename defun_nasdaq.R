@@ -47,8 +47,8 @@ defun_nasdaq <- function(ticker="TSLA",
   library(data.table)
   
   # Sources frequently called forecasting functions
-  source("defun_graph.R")
-  source("defun_simple_probability.R")
+  source("./functions/defun_graph.R")
+  source("./functions/defun_simple_probability.R")
 
   #################################################
   # Import, organize and output csv data
