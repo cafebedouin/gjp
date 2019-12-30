@@ -1,0 +1,88 @@
+---
+title: "United Kingdom, Parliamentary Elections"
+author: "Good Judgement Analytics"
+date: "December 28, 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+The Fixed-term Parliaments Act 2011 mandates an election every five years. An election can happen sooner if there is a majority vote of no confidence in the government, or 2/3rds of the House of Commons votes for one. Traditionally, UK elections are held on a Thursday. The law requires Parliament to dissolve 25 working days before the election, but five weeks is the typical amount of time between parliament being dissolved and a general election being held. Political parties can change their leadership without an election. 
+
+## Majority / Minority Governments
+
+The election system in the United Kingdom is First Past The Post (FPTP). FPTP systems generally led to majority governments. In the United Kingdom, since World War II, minority governments have only happened 3 times in 20 elections (1974, 2010 and 2017). That's twice in the last 10 years but only three times in the past 70. 
+
+## Voter Turnout
+
+The Voter Turnout Database is the best resource for a wide array of statistics on voter turnout from around the world. It contains the most comprehensive global collection of voter turnout statistics from presidential and parliamentary elections since 1945. Always growing, the database also includes European Parliament elections, as presented by country using both the number of registered voters and voting age population as indicators, and in some cases the data includes statistics on spoilt ballot rate. The easy-to-use database allows you to search for data by country or field, and even download all the data from the database in one file.
+
+https://www.idea.int/data-tools/country-view/137/40
+
+## Labor Weakness
+
+“The consequence wasn't just a historic loss, but a catastrophic reduction of the Labour coalition in geographic terms, which makes it much harder to convert votes to seats. And this reduction was already evident in 2017. In that election, Corbyn won 262 seats with 40 percent of the popular vote. In 2001, Tony Blair won only slightly more votes — 40.7 percent — but won a huge majority of 413 seats. In 2005, Blair won 355 seats with 35.2 percent of the vote, and in 2010 Gordon Brown won 258 seats with 29 percent of the vote. This week, Corbyn was only able to squeeze 202 seats out of his 32.2 percent vote share.” 
+
+https://theweek.com/articles/884063/real-warning-labours-crushing-defeat 
+
+## Election Results
+
+* Wikipedia: https://en.wikipedia.org/wiki/Next_United_Kingdom_general_election 
+* Electoral Calculus: https://www.electoralcalculus.co.uk/
+* Oddschecker: https://www.oddschecker.com/politics/british-politics 
+* U.K. Polling Report: https://ukpollingreport.co.uk/ 
+* Poll of Polls: https://www.politico.eu/europe-poll-of-polls/united-kingdom/ 
+
+## Poll Accuracy
+
+```{r polls,results='asis',echo=FALSE, message=F, warning=F}
+source("R/uk-elections.R")
+knitr::kable(polls, booktabs = T, caption = "Polling Providers Performance in 2019")
+```
+
+## Top Polling Model
+
+“The star of the show in 2017’s general election polling landscape was YouGov’s MRP model, which produced remarkably accurate estimates of the results in seats across the country. The equivalent model for this year’s election, explains Joe Greenwood, produces quite similar estimates to approaches based on the average figures from standard national polls…[however, it didn’t perform as well in 2019].
+
+https://blogs.lse.ac.uk/politicsandpolicy/poll-of-polls-mrp/
+
+## Interpreting Odds
+
+“Odds of 16 to 1 imply winnings of 16 times ones original stake , a probability of 1/17, or about 6% (actually slightly less because the "house" typically takes a cut of around 5%). Similarly, 1/16 implies a probability of 16/17 approximately, and 4/7 is 7/11.”
+
+## Suggestions for Improving Forecasts
+
+* Long term base rate is that majority governments are more likely, look for a poll differential of >8% for a likely majority.
+* Short term base rates can be gleaned from odds sites, polls and pro forecasts.
+* When there is a lot of uncertainty, go with base rate. However, if odds sites are significantly different, consider splitting the difference. Odds sites more accurately reflect question conditions. 
+* For parliamentary elections, it is safest to assume that they won’t happen early. However, if there are news reports that a leader than can call an election wants to do so, odds of it happening increase significantly.
+* Understand the relevant parliamentary procedures.
+* When another forecaster in the group says the group is too high on some forecasting option, chances are good that the group is too high on that option and you should check your forecast.
+* With more uncertainty, spread your hedge.
+
+\newpage 
+
+## Common Errors
+
+* Some current event is going to completely change the election landscape, e.g., The Brexit Party. 
+* Weighing the most recent election above the base rate, e.g., Johnson’s reelection bid would play the same as May’s early reelection bid.
+* To assume minority government due to polls when majority governments are the norm.
+* Believing what a politicians says; also, not believing what a politician says.
+* First Past The Post makes third-party strategic voting largely irrelevant.
+* In First Past The Post third parties are not contenders; they are spoilers.
+* Local elections don’t necessarily indicate national sentiment.
+* Relying on history. Past performance is no guarantee of future results. Example: Arguments against a December election, included every general election since 1979 has been held between April and June, the proximity to Christmas, summit schedules, etc.
+* There is little evidence weather effects turnout.
+
+## Experts
+
+* John Curtice: Predicted a 66% chance of a conservative majority.
+
+* Economist Intelligence Unit
+    + “Our baseline scenario (60% probability) is that - in the face of a gridlocked parliament, and no meaningful concessions from the EU - Mr Johnson will call a snap election, arguing that a Conservative majority is needed to deliver Brexit (this requires a two-thirds parliamentary majority under the 2011 Fixed-term Parliaments Act, which we think would be forthcoming).” [Forecast on July 3, 2019, when Super aggregate was above 75% on “No, an election will not be held...” Oddschecker was also ~60% at that time.]
+
+* Robert Peston: Predicted what happened in mid-May.
