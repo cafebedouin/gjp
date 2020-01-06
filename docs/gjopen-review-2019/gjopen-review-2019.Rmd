@@ -1,59 +1,85 @@
 ---
 title: 'Forecasting Review: 2019'
 author: "cafebedouin"
-date: "January 15, 2020"
+date: "January 5, 2020"
 output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
-
-## Suggestions for Improvement
-
-* It is easy to think that there is something special in the moment, that make this situation different and it is going to remake the landscape, e.g., the trend toward majority governments in first-past-the-post-systems or a new party will completed change the political landscape. It happens, but rarely. Forecasts should bet against the rare occurrence unless these is very good reason to do so.
-* Questions that resolve around politics, popular opinion, or the opinions of individuals or a select group of individuals need a significant hedge because there are always significant factors that are in play that cannot be accounted for in a forecast.
-* The politics of countries you do not live in are even more difficult to forecast. Hedge bets.
-* Know the technical details, such as laws and rules. They are often crucial.
-* Know when you aren't bringing anything useful to the prediction and the result is random chance. Avoid these questions, and make sure you have some probabilistic edge on every question.
-
-## Brier Scores Above 1.0: December 15, 2018 - January 15, 2020
-```{r above, echo=FALSE, message=F, warning=F, results='asis'}
-library(kableExtra)
 source("R/gjopen-review-2019.R")
-knitr::kable(above, 
-             booktabs = T,
-             format = "markdown",
-             caption = "Brier Scores Above 1: 2019")
 ```
 
-The good news is that of a total of `r nrow(scores)` scored questions, only `r nrow(above)` or `r sum(round(sum(nrow(above) / nrow(scores)), digits = 2)*100)`% were above 1.0. Of those, I think the first two were bad calls that could have been handled better, see discussion that follows. 
+## Overview
+This report covers questions scored from `r scores[1,1]` to `r scores[nrow(scores),1]`. There were a total of `r nrow(scores)` questions scored. 
 
-The two questions around the National Book Award illustrate two points. One, it is very difficult to come up with a predictive model for subjective preferences. I think there is some room to predict brand premiums, such as franchise movie box office. But, I don't think there is a good model for something like the National Book Awards.  
+## Performance
 
-On one hand, you don't want to have Brier scores above 1 very often, a few a year. On the other end, if you get this number to zero, it probably means means you aren't taking enough risk. I'd like to evaluate this metric over a few years to see if there is an amount of blown questions that seem like the right amount of risk.
+* Mean Brier Score: +`r round(mean(scores$Brier, na.rm = TRUE), digits = 2)`
+* Mean of the Median: +`r round(mean(scores$Median, na.rm = TRUE), digits = 2)`
+* Mean Accuracy: `r round(mean(scores$Accuracy, na.rm = TRUE), digits = 2)`
+
+## Lessons Learned
+
+* The base rate for bills passing U.S. Congress in the last decade is 1-3%.
+* The base rate for U.S. state legislatures range from <10% to as much as 50% in the Western States, which pass few bills comparatively.
+* U.S. State legislatures are probably more representative of international, which should probably have a cushion built in because there are many unknowns, say 15-30% chance of a non-U.S. bill passing into law.
+* The politics of countries you do not live in are even more difficult to forecast. Hedge bets.
+* People's expressed desires in media may not reflect what they really think.
+* When deriving a base rate from a small sample size, such as the length of Special Counsel investigations, it is best to build in a big cushion.
+* Regulation slows the deployment of fundamentally new technology and like laws, new regulations are slow to develop.
+* Be careful when going low or against the crowd on a popular franchise.
+* There is a difference between technically possible and a product launch of that capability.
+* It is easy to think that there is something special in the moment, that make this situation different and it is going to remake the landscape, e.g., the trend toward majority governments in first-past-the-post-systems or a new party will completed change the political landscape. It happens, but rarely. Forecasts should bet against the rare occurrence unless there is a very good reason to do so.
+* Questions that resolve around politics, popular opinion, or the opinions of individuals or a select group of individuals need a significant hedge because there are always significant factors that are in play that cannot be accounted for in a forecast.
+* Know the technical details, such as laws and rules. They are often crucial.
+* Know when you aren't bringing anything useful to the prediction and the result is random chance.
+* Make sure you have some probabilistic edge on every question, even if it is going with default when the crowd is making a risky call.
+* It is very difficult to come up with a predictive model for subjective preferences.
+* If someone is in the media and subsequently gets into politics, give a boost to their probabilities due to para-social relationships.
+* Don't exclusively follow others. Always do your own research and the work.
+* Luck counts too.
+
+
 
 \newpage
 
-## Selection Criteria for Good and Bad Brier Score Evaluation
+## Criteria for Evaluating Performance
 
-This is an annual review of my GJOpen performance. To determine good performance, I have identified questions where my Accuracy was a .10 differential, Brier score was above or below 0.25, and I was involved in the question for more than 75% of the time.
+Selecting questions for closer evaluation, I picked questions that met the following criteria: 
 
-## Bad Brier Scores: December 15, 2018 - January 15, 2020
-```{r bad, echo=FALSE, message=F, warning=F, results='asis'}
+1. Brier Score > .75, or
+2. Accuracy was .10 higher or lower than the Median 
+
+Scores are sorted from worst accuracy to best.
+
+```{r outliers, echo=FALSE, message=F, warning=F, results='asis'}
 library(kableExtra)
-source("R/gjopen-review-2019.R")
-knitr::kable(bad, 
+# source("R/gjopen-review-2019.R")
+knitr::kable(outliers, 
              booktabs = T,
              format = "markdown",
-             caption = "Bad Brier Scores: 2019")
+             caption = "Outlier Brier Scores: 2019")
 ```
+## Question Review
 
-**1.  Will California's Pacific Gas and Electric Company file for bankruptcy before 1 November 2019?**
+**1. What will be the domestic box office gross in the opening week for Warner Bros.' Joker, according to Box Office Mojo?**
+
+My assessment was this was an art film. After seeing it, I still think it is an art film. The lesson here is that branding and super-hero related franchises will do better than their fundamentals would suggest. I think there is some room to predict brand premiums, but be careful of weighing a popular brand downward, even for off-brand projects.
+\newpage
+
+**2. Before 1 January 2020, will Tesla release an Autopilot feature designed to navigate traffic lights? **
+
+Musk's conversation with ARK Investing in February that Tesla would have full autonomy technically complete by the end of the year was convincing. The problem is not the technical ability. The problem is regulation, and I should have understood that fact.
+
+**3. Before 1 January 2020, will the U.S. President sign legislation increasing the number of exemptions for autonomous vehicles allowed per manufacturer by the Federal Motor Vehicle Safety Standards? **
+
+Crowd was low. I went contrary based on some movement in committee and the obvious need to have autonomous standards that cross states. Legislation always takes longer than you think.
+
+**4.  Will California's Pacific Gas and Electric Company file for bankruptcy before 1 November 2019?**
 
 I thought the California legislature would protect Pacific Gas and Electric Company. One lesson here is that it is difficult to gauge all relevant political considerations in a political decision like this one. Another is that we should weigh toward the status quo. If the legislature does nothing, then the situation was such that Pacific Gas and Electric Company has to file for bankruptcy. I simply had unwarranted confidence that the legislature would have to step in and got burned on this question.
-
-**2. Will Robert Mueller cease to be Special Counsel before 1 January 2020?**
+**5. Will Robert Mueller cease to be Special Counsel before 1 January 2020?**
 
 I relied too much on base rates. I ended up doing better than the predicted Brier score because it became obvious, before the question closed, how it was going to resolve. However, I disbelieved it for longer than I should have. My rationale for this question:
 
@@ -69,83 +95,134 @@ I'm going go with a 35% chance. That's a Brier score of .245 if I'm right and .8
 
 [2] https://en.wikipedia.org/wiki/Saturday_Night_Massacre
 
+**6. Will China's National People's Congress or its Standing Committee pass a property tax law before 1 October 2019?**
+
+The lesson here is that it is even harder to predict the politics in a country that I do not live in. As a matter of course, these questions should be conservative.
+
 \newpage
 
-**3. Before 1 October 2019, will Robert Mueller testify in person before Congress?**
+**7. Will a political party gain an overall majority of seats in the House of Commons at the next UK General Election? ** 		
 
-Robert Mueller stated he would let his report speak for himself. I started in at 2% and then came up when it was clear he would be compelled to testify. The lesson here is to built more uncertainty into political forecasts.
+There's a key detail that I did not learn until after this question was over, i.e.:	
 
-**4. Will China's National People's Congress or its Standing Committee pass a property tax law before 1 October 2019?**
-
-The lesson here is that it is even harder to predict the politics in a country that I do not live in. As a matterof course, these questions should be conservative.
-
-**5. What will be the domestic box office gross in the opening week for Warner Bros.' Joker, according to Box Office Mojo?**
-
-My assessment is this was an art film. After seeing it, I still think it is an art film. The lesson here is that branding and super hero related franchises will do better than their fundamentals would suggest. 
-
-**6. Will a political party gain an overall majority of seats in the House of Commons at the next UK General Election?** 
-
-There's a key detail that I did not learn until after this question was over, i.e.:
-
-"The election system in the United Kingdom is First Past The Post (FPTP). FPTP systems generally led to majority governments. In the United Kingdom, since World War II, minority governments have only happened 3 times in 20 elections (1974, 2010 and 2017). That's twice in the last 10 years but only three times in the past 70."-boz
+"The election system in the United Kingdom is First Past The Post (FPTP). FPTP systems generally led to majority governments. In the United Kingdom, since World War II, minority governments have only happened 3 times in 20 elections (1974, 2010 and 2017). That's twice in the last 10 years but only three times in the past 70."-boz		  
 
 I should have taken the effort to figure this out on my own rather than getting wrapped up in the Brexit narrative.
 
+**8. Before 1 October 2019, will Robert Mueller testify in person before Congress? **
+
+I bought the argument that Mueller wasn't going to testify and let the report speak for itself. In retrospect, this argument seems absurd.
+
+**9. When will Denmark approve the construction of Nord Stream 2 through its territorial waters or Exclusive Economic Zone? **
+
+I didn't look into this myself, but followed another superforecaster who I thought would have a handle on it. Lesson learned. Do your own research.
+
+**10. What book will win the 2019 National Book Award for fiction? **
+
+It is very difficult to come up with a predictive model for the subjective preferences of a panel of experts. I don't think there is a good model for something like the National Book Awards, and while some think like The Supreme Court has models like stare decisis that make prediction better, it is still better to be conservative. 
+
+**11. What will be the percent change in the U.S. Consumer Price Index for All Urban Consumers (CPI-U) for the 12 months ending in December 2018? **
+
+In retrospect, looking at the chart, this was an easy call. I don't have any rationale. I bet I just did a quick forecast here and made an easy mistake.
+
+**12. What book will win the 2019 National Book Award for nonfiction? **
+
+See 10. above.
+
+**13. Who will win Ukraine's 2019 presidential election? **
+
+The polls told the story of Zelenskiy's win. Another instance of an entertainer cashing in on their para-social relationships to win elected office.
+
+**14. Will there be a new prime minister of the United Kingdom before 1 July 2019? **
+
+The key to this question was the procedure. It came close, but it did not happen in the time frame because of the need for a vote. I assumed one would be necessary given the different factions of the Conservative Party in the United Kingdom.
+
+**15. Will the United States experience two consecutive quarters of a negative real GDP growth rate in 2019? **
+
+The only reason why this one made this list is that I called it early.	       
+**16. What will be the closing value of the S&P/TSX Composite Index on 31 October 2019? **
+
+In combination with the time-series R script, there is simply no substitute for an automated update regime that can take current price and do a walk through historical value to come up with an on demand probability. It would be good to improve this using some randomness, such as a series of random walks through the data to give more conservative prices. As it stands, the straight walk method tends to give about a -0.07 edge over GJOpen crowd and it gave a -0.02 edge over Supers on the one question I used it with in that forum.
+
 \newpage
 
-## Good Scores: December 15, 2018 - January 15, 2020
-```{r good, echo=FALSE, message=F, warning=F, results='asis'}
-library(kableExtra)
-source("R/gjopen-review-2019.R")
-knitr::kable(good, 
-             booktabs = T,
-             format = "markdown",
-             caption = "Good Brier Scores: 2019")
-```
+**17. Will Ruth Bader Ginsburg cease to be an Associate Justice of the U.S. Supreme Court before 1 January 2020? **
 
-**1. Will the UK hold a referendum vote on its relationship with the EU or a snap general election before 29 March 2019?**
+Straight actuarial table with time decay. Crowd got caught up in the illness narratives.
 
-I was at 100% for the duration. I think there was some research that suggested 16 weeks before a referendum could be held, to test questions and so forth, and there wasn't even talk of doing any of that work necessary.
+**18. Before 1 October 2019, will Mohammed bin Salman cease to be the Crown Prince of Saudi Arabia? **
 
-**2. Before 30 March 2019, what will happen next with regard to the UK's notification of Article 50?**
+Basic, run-of-the-mill leadership type question, but the crowd got sucked in with all the coverage on Jamal Khashoggi and what they wanted to happen.	  
 
-Simply a judgment call that the issues were so contentious, and there wasn't a sufficient majority to get anything passed in the time frame.  
+**19. What will be the price of regular gasoline in the U.S. per gallon on 30 December 2019? **
 
-**3. Will there be a new prime minister of the United Kingdom before 1 July 2019?**
+Modified time-series.R script to one trading day to cover weeks. It performed about twice as well as other market related questions I've used this script with.
+
+**20. How many seats in the Congress of Deputies will the Spanish Socialist Workers' Party (PSOE) win in the next Spanish general election? **
+
+They ended up losing a few seats, and getting into the lower option. However, I think splitting the risk probably helped get this question into the "good" category.  
+
+My rationale: "The Socialists would gain 11 seats to win 134, a GAD3 poll carried out for Vanguardia newspaper showed, still not enough for a majority of 176. Podemos would lose 5 seats, the poll showed."[1]				
+					       
+Most recent GAD3 and other polls project ~120. They won 123 in the April election. In 2016, it was 85. It seems unlikely that much will change. There's some fragmentation on the left that might help PSOE, so putting the bulk on the middle option that they pick up a few seats."
+
+**21. What percentage of all domestic U.S. equity funds will be outperformed by the S&P Composite 1500 index for the one-year period ending 30 June 2019? **
+
+Decided to go with the higher number because that was the recent pattern. My rationale: "Mid numbers from 2008 are 49, 55, 56, 49, 90, 55, 60, 64, 90, 63, 58. That gives us a baseline of 0%, 64%, 18%, 18%. But, clearly these numbers have a relationship with recessions.						
+
+Consider the annual numbers, we have the following from 2000-2017: 54.87, 58.34, 48.01, 51.43, 42.26, 68.02, 48.9, 64.91, 40.68, 48.28, 84.65, 64.91, 43.26, 86.89, 74.03, 60.49, 63.43, 57.98. If you go straight annual baseline, that's: 0%, 55%, 23%, and 12%.							
+
+We have about a 1/7 chance of being in a recession, so I think these numbers skew downwards. Recent trends have higher numbers. All of which makes me think that the 3rd choice edges out 2 and it is close to a toss up, also need to add some to the 4th since there is an element of random chance there - so I'll just go with the default, taking 2% off the first bin."	
+
+**22. Before 1 November 2019, will the British oil tanker Stena Impero be released from Iranian custody? **
+
+There didn't seem to be a good reason to hold it. The United States was in the background, and we don't know the politics. In the end, I made a risky call but it turned out.	 
+
+**23. Before 1 January 2020, will the UK and the EU adopt an agreement on which customs territory Northern Ireland will be located in after the end of any Brexit transition period? **
+
+This question was dependent on getting through a Brexit deal. Given the difficulties there, this was a straight-forward call.
+
+**24. Before 1 January 2020, will the U.S. House of Representatives pass an article of impeachment against President Trump? **
+
+I came across a piece of information that explained the possible strategy and jumped in at the mid-way point with a call the opposite of the crowd. The information was key to getting this right. 
+
+\newpage
+
+**25. Between 3 May 2019 and 1 November 2019, which of the following will happen first in relation to the Brexit process?  **
+
+Lucky. There was a lot of uncertainty around this question. Legislatures a good at kicking the can down the road.
+
+**26. Before 30 March 2019, what will happen next with regard to the UK's notification of Article 50? **
+
+Simply a judgment call that the issues were so contentious, and there wasn't a sufficient majority to get anything passed in the time frame.
+
+**27. Will there be a new prime minister of the United Kingdom before 1 July 2019?  **
 
 This one went well because I stuck with the call, even though there was a possibility that there would be a new one elected in the time period. But, I look at the process suggested that it was very unlikely, but most of the crowd didn't look that deeply into it.
 
-**4. What percentage of all domestic U.S. equity funds will be outperformed by the S&P Composite 1500 index for the one-year period ending 30 June 2019?**
+**28. Before 1 January 2020, will the Federal Communications Commission (FCC) vote in favor of granting a waiver petition [GN Docket No. 18-357] to allow for the further deployment of Cellular Vehicle-to-Everything (C-V2X) technology? **
 
-Decided to go with the higher number because that was the recent pattern. My rationale: "Mid numbers from 2008 are 49, 55, 56, 49, 90, 55, 60, 64, 90, 63, 58. That gives us a baseline of 0%, 64%, 18%, 18%. But, clearly these numbers have a relationship with recessions.
+This was clear once Pai announced he was going to "take a fresh look". He's in the pocket of the telecommunications industry, so he wouldn't make any move that would be a de facto grant for an automotive frequency, even a new one.
 
-Consider the annual numbers, we have the following from 2000-2017: 54.87, 58.34, 48.01, 51.43, 42.26, 68.02, 48.9, 64.91, 40.68, 48.28, 84.65, 64.91, 43.26, 86.89, 74.03, 60.49, 63.43, 57.98. If you go straight annual baseline, that's: 0%, 55%, 23%, and 12%.
+**29. Will the UK hold a referendum vote on its relationship with the EU or a snap general election before 29 March 2019? **
 
-We have about a 1/7 chance of being in a recession, so I think these numbers skew downwards. Recent trends have higher numbers. All of which makes me think that the 3rd choice edges out 2 and it is close to a toss up, also need to add some to the 4th since there is an element of random chance there - so I'll just go with the default, taking 2% off the first bin."
+I was at 100% for the duration. I think there was some research that suggested 16 weeks before a referendum could be held, to test questions and so forth, and there wasn't even talk of doing any of that work necessary.    
 
-**5. Before 1 November 2019, will the British oil tanker Stena Impero be released from Iranian custody?**
+**30. Who will the European Council appoint as the next European Central Bank (ECB) president?  **
 
-There didn't seem to be a good reason to hold it. The United States was in the background, and we don't know the politics. In the end, I made a risky call but it turned out.
+Success on this question came from understanding the process and time frames. At some point, the candidate was clear, but it was equally clear she would not get confirmed by the time the question closed. Then, it was simply a matter of updating, while most of the crowd missed this change.
 
-**6. Before 1 October 2019, will Mohammed bin Salman cease to be the Crown Prince of Saudi Arabia?** 
-
-Basic, run-of-the-mill leadership type question, but the crowd got sucked in with all the coverage on Jamal Khashoggi and what they wanted to happen.
-
-**7. How many seats in the Congress of Deputies will the Spanish Socialist Workers' Party (PSOE) win in the next Spanish general election?**
-
-They ended up losing a few seats, and getting into the lower option. However, I think splitting the risk probably helped get this question into the "good" category.
-
-My rationale: "The Socialists would gain 11 seats to win 134, a GAD3 poll carried out for Vanguardia newspaper showed, still not enough for a majority of 176. Podemos would lose 5 seats, the poll showed."[1]
-
-Most recent GAD3 and other polls project ~120. They won 123 in the April election. In 2016, it was 85. It seems unlikely that much will change. There's some fragmentation on the left that might help PSOE, so putting the bulk on the middle option that they pick up a few seats."
-
-**8. How many of the following 10 marginal seats in the House of Commons will change parties in the upcoming 2019 UK elections?**
+**31. How many of the following 10 marginal seats in the House of Commons will change parties in the upcoming 2019 UK elections? **
 
 Simply did a lot of work and spent time coming up with an assessment of each race, averaged my assessment, and then did a binomial calculation to figure out the probabilities. Anyone that put that much work into this could have achieved a similar result.
 
-**9. Will the United States experience two consecutive quarters of a negative real GDP growth rate in 2019?*
+**32. Will Mick Mulvaney cease to be White House Chief of Staff before 1 January 2020? **
 
-The only reason why this one made this list is that I called it early.
+A bit of a risky call. But, it just seemed that Mulvaney was too deep in Ukraine and other "drug deals" to be dismissed easily. But, again, there is a lot more risk with Trump. I rolled the dice on this one, and it worked out.
+
+**33. Between 5 July 2019 and 31 December 2019, will McDonald's announce that it will offer an alternative protein vegetarian burger in the United States? **
+
+Easy call. I was at 25% from the start. McDonald's doesn't react that quickly to anything. This was a simply matter of understanding the Quick Service Restaurant segment and the McDonald's business. It did feel risky, up until the Montreal trial, about 3 months before the end of the question.  
 
 \newpage
 ## All Brier Scores: December 15, 2018 - January 15, 2020
