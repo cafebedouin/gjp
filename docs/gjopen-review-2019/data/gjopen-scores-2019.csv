@@ -1,53 +1,75 @@
 Date Ended,Question,Participation Rate,Brier Score,Median Score,Accuracy Score 
-"Dec 15, 2018 01:00PM ","Before 15 December 2018, will the House of Commons approve the Withdrawal Agreement of the United Kingdom from the European Union? ",85%,0.004,0,0.003
-"Dec 28, 2018 04:00PM ",What will be the closing spot price for an ounce of gold against the US dollar on 28 December 2018? ,98%,0.218,0.294,-0.074
-"Jan 1, 2019 01:00PM ",What will be the percent change in the U.S. Consumer Price Index for All Urban Consumers (CPI-U) for the 12 months ending in December 2018? ,73%,0.904,0.807,0.071
-"Jan 1, 2019 04:00PM ",Will the yield curve for 2-year and 10-year U.S. Treasuries invert before 2019? ,73%,0.004,0.005,-0.001
-"Jan 2, 2019 01:00PM ","Between 30 November 2018 and 30 September 2019, which country will next land on the moon? ",94%,0.005,0.091,-0.081
-"Jan 4, 2019 11:29AM ",What will the Bureau of Labor Statistics report the U.S. civilian unemployment rate (U3) to be for the month of December 2018? ,73%,0.083,0.194,-0.082
-"Jan 29, 2019 01:00PM ",Will California's Pacific Gas and Electric Company file for bankruptcy before 1 November 2019? ,100%,1.225,0.869,0.356
-"Feb 1, 2019 01:00PM ","How many total ""Southwest Family Unit Subject and Unaccompanied Alien Children Apprehensions"" will U.S. Customs and Border Protection report for the El Centro and San Diego sectors in January 2019? ",73%,0.206,0.335,-0.094
-"Mar 30, 2019 01:00PM ",Will the UK hold a referendum vote on its relationship with the EU or a snap general election before 29 March 2019?  ,99%,0,0.415,-0.411
-"Apr 1, 2019 01:00PM ",What will be the Bank of England's Bank Rate on 1 April 2019?  ,89%,0.022,0.092,-0.063
-"Apr 21, 2019 01:00PM ",Who will win Ukraine's 2019 presidential election? ,74%,0.134,0.273,-0.103
-"Apr 22, 2019 01:00PM ","Before 30 March 2019, what will happen next with regard to the UK's notification of Article 50? ",91%,0.043,0.41,-0.334
-"May 10, 2019 01:00PM ",What will be Uber's end-of-day market capitalization on the day of its initial public offering? ,99%,0.454,0.438,0.016
-"May 25, 2019 01:00PM ",Will Narendra Modi be appointed to a second consecutive term as prime minister of India after the 2019 general elections? ,94%,0.056,0.161,-0.099
-"May 26, 2019 01:00PM ",Will voter turnout for the 2019 European Parliament elections set a record low? ,100%,0.003,0.092,-0.089
-"May 29, 2019 01:00PM ",Will Robert Mueller cease to be Special Counsel before 1 January 2020? ,99%,0.654,0.302,0.35
-"Jul 1, 2019 11:00AM ",Will there be a new prime minister of the United Kingdom before 1 July 2019?  ,95%,0.087,0.442,-0.338
-"Jul 1, 2019 01:00PM ",What percentage of all domestic U.S. equity funds will be outperformed by the S&P Composite 1500 index for the one-year period ending 30 June 2019? ,100%,0.101,0.26,-0.158
-"Jul 24, 2019 10:00AM ","Before 1 October 2019, will Robert Mueller testify in person before Congress? ",100%,0.291,0.163,0.128
-"Aug 1, 2019 12:00PM ","Before 1 August 2019, will Facebook announce that Mark Zuckerberg will cease to be the company's sole Chairman or CEO? ",100%,0.001,0.042,-0.042
-"Aug 22, 2019 11:00AM ","Before 22 August 2019, will there be a lethal confrontation between the national military forces of Iran and the United States either in Iran or at sea? ",98%,0.009,0.026,-0.017
-"Aug 23, 2019 05:00PM ",What will be the end-of-day closing value for the U.S. dollar against the Russian ruble on 23 August 2019?  ,100%,0.34,0.374,-0.034
-"Aug 30, 2019 01:00PM ",What will be the closing value for the Dow Jones Transportation Average on 30 August 2019? ,64%,0.086,0.15,-0.041
-"Aug 31, 2019 01:00PM ",What will be the closing yield for 10-year U.S. Treasuries on 31 August 2019?  ,99%,0.561,0.642,-0.08
-"Sep 9, 2019 11:00AM ","Between 9 August 2019 and 8 September 2019, will anti-government protests in Russia result in five or more fatalities? ",97%,0,0.005,-0.005
-"Sep 24, 2019 01:00PM ","Before 1 October 2019, will Margaret Atwood's book ""The Testaments"" be #1 on any weekly New York Times Best Sellers list? ",100%,0.004,0.008,-0.005
-"Sep 26, 2019 11:00AM ","Before 1 November 2019, will the British oil tanker Stena Impero be released from Iranian custody? ",98%,0.011,0.202,-0.188
-"Oct 1, 2019 11:00AM ",Will Hassan Rouhani cease to be president of Iran before 1 October 2019? ,55%,0.001,0.004,-0.002
-"Oct 1, 2019 11:00AM ",Will China's National People's Congress or its Standing Committee pass a property tax law before 1 October 2019? ,97%,0.694,0.34,0.343
-"Oct 1, 2019 11:00AM ","Before 1 October 2019, will Mohammed bin Salman cease to be the Crown Prince of Saudi Arabia? ",100%,0.003,0.131,-0.127
-"Oct 1, 2019 11:00AM ","Before 1 October 2019, will the U.S. House of Representatives pass an article of impeachment against President Trump? ",100%,0.002,0.082,-0.079
-"Oct 1, 2019 01:00PM ","Before 1 October 2019, will nuclear experts from the IAEA, the CTBTO, the UN, United States, or South Korea visit North Korea’s Yongbyon nuclear facility? ",48%,0.001,0.001,0
-"Oct 1, 2019 01:00PM ",Who will the European Council appoint as the next European Central Bank (ECB) president? ,100%,0.896,1.313,-0.417
-"Oct 11, 2019 01:00PM ","What will be the domestic box office gross in the opening week for Warner Bros.' Joker, according to Box Office Mojo? ",100%,1.696,0.777,0.918
-"Oct 22, 2019 01:00PM ",Will Justin Trudeau cease to be prime minister of Canada after the next federal election?  ,100%,0.273,0.236,0.036
-"Oct 28, 2019 01:00PM ","Between 3 May 2019 and 1 November 2019, which of the following will happen first in relation to the Brexit process?  ",89%,0.548,0.836,-0.255
-"Oct 30, 2019 02:00PM ",When will Denmark approve the construction of Nord Stream 2 through its territorial waters or Exclusive Economic Zone? ,66%,0.667,0.479,0.125
-"Oct 31, 2019 06:00PM ",What will be the closing value of the S&P/TSX Composite Index on 31 October 2019? ,76%,0.448,0.604,-0.118
-"Nov 1, 2019 09:00AM ",Will the United Kingdom (UK) leave the European Union (EU) on or before 31 October 2019? ,55%,0.002,0.045,-0.023
-"Nov 10, 2019 06:00PM ",How many seats in the Congress of Deputies will the Spanish Socialist Workers' Party (PSOE) win in the next Spanish general election? ,100%,0.184,0.331,-0.147
-"Nov 20, 2019 08:00PM ",What book will win the 2019 National Book Award for fiction? ,23%,1.024,0.86,0.037
-"Nov 20, 2019 08:00PM ",What book will win the 2019 National Book Award for nonfiction? ,23%,1.124,0.78,0.079
-"Nov 29, 2019 06:00PM ",What will be the end-of-day closing value for the U.S. dollar against the Mexican peso on 29 November 2019? ,91%,0.17,0.218,-0.045
-"Nov 30, 2019 01:00PM ",What will be The We Company's (WeWork's parent company) end-of-day market capitalization on the day of its initial public offering (IPO)? ,92%,0.009,0.099,-0.082
-"Dec 1, 2019 01:00PM ","Between 5 July 2019 and 30 November 2019, how many Category 4 or above hurricanes will occur in the Atlantic Ocean according to the National Hurricane Center? ",99%,0.118,0.215,-0.096
-"Dec 10, 2019 01:00PM ","On 10 December 2019, how many total locations with Combined Charging System (CCS) fast chargers will be installed in the European area? ",100%,0.12,0.209,-0.089
-"Dec 12, 2019 06:00PM ",Will a political party gain an overall majority of seats in the House of Commons at the next UK General Election? ,100%,0.638,0.496,0.142
-"Dec 12, 2019 06:00PM ",How many of the following 10 marginal seats in the House of Commons will change parties in the upcoming 2019 UK elections? ,100%,0.173,0.592,-0.419
-"Dec 18, 2019 06:00PM ","Before 1 February 2020, will Ukraine adopt a new law giving or extending Donbas special status for local self-government? ",27%,0,0.212,-0.057
-"Dec 18, 2019 08:00PM ","Before 1 January 2020, will the U.S. House of Representatives pass an article of impeachment against President Trump? ",41%,0.046,0.642,-0.244
-"Dec 20, 2019 11:00AM ",When will the UK prime minister or chancellor of the exchequer announce the government's choice for the next governor of the Bank of England? ,25%,0.002,0.378,-0.094
-"Dec 20, 2019 12:00PM ",Will the United States experience two consecutive quarters of a negative real GDP growth rate in 2019? ,100%,0.009,0.118,-0.109
+"Dec 15, 2018 12:00PM ","Before 15 December 2018, will the House of Commons approve the Withdrawal Agreement of the United Kingdom from the European Union? ",85%,0.004,0,0.003
+"Dec 28, 2018 03:00PM ",What will be the closing spot price for an ounce of gold against the US dollar on 28 December 2018? ,98%,0.218,0.294,-0.074
+"Jan 1, 2019 12:00PM ",What will be the percent change in the U.S. Consumer Price Index for All Urban Consumers (CPI-U) for the 12 months ending in December 2018? ,73%,0.904,0.807,0.071
+"Jan 1, 2019 03:00PM ",Will the yield curve for 2-year and 10-year U.S. Treasuries invert before 2019? ,73%,0.004,0.005,-0.001
+"Jan 2, 2019 12:00PM ","Between 30 November 2018 and 30 September 2019, which country will next land on the moon? ",94%,0.005,0.091,-0.081
+"Jan 4, 2019 10:29AM ",What will the Bureau of Labor Statistics report the U.S. civilian unemployment rate (U3) to be for the month of December 2018? ,73%,0.083,0.194,-0.082
+"Jan 29, 2019 12:00PM ",Will California's Pacific Gas and Electric Company file for bankruptcy before 1 November 2019? ,100%,1.225,0.869,0.356
+"Feb 1, 2019 12:00PM ","How many total ""Southwest Family Unit Subject and Unaccompanied Alien Children Apprehensions"" will U.S. Customs and Border Protection report for the El Centro and San Diego sectors in January 2019? ",73%,0.206,0.335,-0.094
+"Mar 30, 2019 12:00PM ",Will the UK hold a referendum vote on its relationship with the EU or a snap general election before 29 March 2019?  ,99%,0,0.415,-0.411
+"Apr 1, 2019 12:00PM ",What will be the Bank of England's Bank Rate on 1 April 2019?  ,89%,0.022,0.092,-0.063
+"Apr 21, 2019 12:00PM ",Who will win Ukraine's 2019 presidential election? ,74%,0.134,0.273,-0.103
+"Apr 22, 2019 12:00PM ","Before 30 March 2019, what will happen next with regard to the UK's notification of Article 50? ",91%,0.043,0.41,-0.334
+"May 10, 2019 12:00PM ",What will be Uber's end-of-day market capitalization on the day of its initial public offering? ,99%,0.454,0.438,0.016
+"May 25, 2019 12:00PM ",Will Narendra Modi be appointed to a second consecutive term as prime minister of India after the 2019 general elections? ,94%,0.056,0.161,-0.099
+"May 26, 2019 12:00PM ",Will voter turnout for the 2019 European Parliament elections set a record low? ,100%,0.003,0.092,-0.089
+"May 29, 2019 12:00PM ",Will Robert Mueller cease to be Special Counsel before 1 January 2020? ,99%,0.654,0.302,0.35
+"Jul 1, 2019 10:00AM ",Will there be a new prime minister of the United Kingdom before 1 July 2019?  ,95%,0.087,0.442,-0.338
+"Jul 1, 2019 12:00PM ",What percentage of all domestic U.S. equity funds will be outperformed by the S&P Composite 1500 index for the one-year period ending 30 June 2019? ,100%,0.101,0.26,-0.158
+"Jul 24, 2019 09:00AM ","Before 1 October 2019, will Robert Mueller testify in person before Congress? ",100%,0.291,0.163,0.128
+"Aug 1, 2019 11:00AM ","Before 1 August 2019, will Facebook announce that Mark Zuckerberg will cease to be the company's sole Chairman or CEO? ",100%,0.001,0.042,-0.042
+"Aug 22, 2019 10:00AM ","Before 22 August 2019, will there be a lethal confrontation between the national military forces of Iran and the United States either in Iran or at sea? ",98%,0.009,0.026,-0.017
+"Aug 23, 2019 04:00PM ",What will be the end-of-day closing value for the U.S. dollar against the Russian ruble on 23 August 2019?  ,100%,0.34,0.374,-0.034
+"Aug 30, 2019 12:00PM ",What will be the closing value for the Dow Jones Transportation Average on 30 August 2019? ,64%,0.086,0.15,-0.041
+"Aug 31, 2019 12:00PM ",What will be the closing yield for 10-year U.S. Treasuries on 31 August 2019?  ,99%,0.561,0.642,-0.08
+"Sep 9, 2019 10:00AM ","Between 9 August 2019 and 8 September 2019, will anti-government protests in Russia result in five or more fatalities? ",97%,0,0.005,-0.005
+"Sep 24, 2019 12:00PM ","Before 1 October 2019, will Margaret Atwood's book ""The Testaments"" be #1 on any weekly New York Times Best Sellers list? ",100%,0.004,0.008,-0.005
+"Sep 26, 2019 10:00AM ","Before 1 November 2019, will the British oil tanker Stena Impero be released from Iranian custody? ",98%,0.011,0.202,-0.188
+"Oct 1, 2019 10:00AM ",Will Hassan Rouhani cease to be president of Iran before 1 October 2019? ,55%,0.001,0.004,-0.002
+"Oct 1, 2019 10:00AM ",Will China's National People's Congress or its Standing Committee pass a property tax law before 1 October 2019? ,97%,0.694,0.34,0.343
+"Oct 1, 2019 10:00AM ","Before 1 October 2019, will Mohammed bin Salman cease to be the Crown Prince of Saudi Arabia? ",100%,0.003,0.131,-0.127
+"Oct 1, 2019 10:00AM ","Before 1 October 2019, will the U.S. House of Representatives pass an article of impeachment against President Trump? ",100%,0.002,0.082,-0.079
+"Oct 1, 2019 12:00PM ","Before 1 October 2019, will nuclear experts from the IAEA, the CTBTO, the UN, United States, or South Korea visit North Korea’s Yongbyon nuclear facility? ",48%,0.001,0.001,0
+"Oct 1, 2019 12:00PM ",Who will the European Council appoint as the next European Central Bank (ECB) president? ,100%,0.896,1.313,-0.417
+"Oct 11, 2019 12:00PM ","What will be the domestic box office gross in the opening week for Warner Bros.' Joker, according to Box Office Mojo? ",100%,1.696,0.777,0.918
+"Oct 22, 2019 12:00PM ",Will Justin Trudeau cease to be prime minister of Canada after the next federal election?  ,100%,0.273,0.236,0.036
+"Oct 28, 2019 12:00PM ","Between 3 May 2019 and 1 November 2019, which of the following will happen first in relation to the Brexit process?  ",89%,0.548,0.836,-0.255
+"Oct 30, 2019 01:00PM ",When will Denmark approve the construction of Nord Stream 2 through its territorial waters or Exclusive Economic Zone? ,66%,0.667,0.479,0.125
+"Oct 31, 2019 05:00PM ",What will be the closing value of the S&P/TSX Composite Index on 31 October 2019? ,76%,0.448,0.604,-0.118
+"Nov 1, 2019 08:00AM ",Will the United Kingdom (UK) leave the European Union (EU) on or before 31 October 2019? ,55%,0.002,0.045,-0.023
+"Nov 10, 2019 05:00PM ",How many seats in the Congress of Deputies will the Spanish Socialist Workers' Party (PSOE) win in the next Spanish general election? ,100%,0.184,0.331,-0.147
+"Nov 20, 2019 07:00PM ",What book will win the 2019 National Book Award for fiction? ,23%,1.024,0.86,0.037
+"Nov 20, 2019 07:00PM ",What book will win the 2019 National Book Award for nonfiction? ,23%,1.124,0.78,0.079
+"Nov 29, 2019 05:00PM ",What will be the end-of-day closing value for the U.S. dollar against the Mexican peso on 29 November 2019? ,91%,0.17,0.218,-0.045
+"Nov 30, 2019 12:00PM ",What will be The We Company's (WeWork's parent company) end-of-day market capitalization on the day of its initial public offering (IPO)? ,92%,0.009,0.099,-0.082
+"Dec 1, 2019 12:00PM ","Between 5 July 2019 and 30 November 2019, how many Category 4 or above hurricanes will occur in the Atlantic Ocean according to the National Hurricane Center? ",99%,0.118,0.215,-0.096
+"Dec 10, 2019 12:00PM ","On 10 December 2019, how many total locations with Combined Charging System (CCS) fast chargers will be installed in the European area? ",100%,0.12,0.209,-0.089
+"Dec 12, 2019 05:00PM ",Will a political party gain an overall majority of seats in the House of Commons at the next UK General Election? ,100%,0.638,0.496,0.142
+"Dec 12, 2019 05:00PM ",How many of the following 10 marginal seats in the House of Commons will change parties in the upcoming 2019 UK elections? ,100%,0.173,0.592,-0.419
+"Dec 18, 2019 05:00PM ","Before 1 February 2020, will Ukraine adopt a new law giving or extending Donbas special status for local self-government? ",27%,0,0.212,-0.057
+"Dec 18, 2019 07:00PM ","Before 1 January 2020, will the U.S. House of Representatives pass an article of impeachment against President Trump? ",41%,0.046,0.642,-0.244
+"Dec 20, 2019 10:00AM ",When will the UK prime minister or chancellor of the exchequer announce the government's choice for the next governor of the Bank of England? ,25%,0.002,0.378,-0.094
+"Dec 20, 2019 11:00AM ",Will the United States experience two consecutive quarters of a negative real GDP growth rate in 2019? ,100%,0.009,0.118,-0.109
+"Dec 29, 2019 05:00PM ","Before 31 December 2019, will a Model 3 produced in Tesla's Shanghai Gigafactory 3 be delivered to a customer? ",100%,0,0.078,-0.078
+"Dec 30, 2019 01:00PM ",What will be the price of regular gasoline in the U.S. per gallon on 30 December 2019? ,84%,0.16,0.323,-0.137
+"Jan 1, 2020 12:00PM ",Will Mick Mulvaney cease to be White House Chief of Staff before 1 January 2020? ,100%,0.461,0.92,-0.459
+"Jan 1, 2020 12:00PM ",Will there be a new prime minister of the United Kingdom before 1 January 2020? ,99%,0.014,0.12,-0.105
+"Jan 1, 2020 12:00PM ",Will North Korea launch an intercontinental ballistic missile (ICBM) before 1 January 2020? ,100%,0.111,0.044,0.067
+"Jan 1, 2020 12:00PM ","Before 1 January 2020, will either SpaceX or Boeing launch its first crewed space mission?  ",9%,0,0.062,-0.005
+"Jan 1, 2020 12:00PM ",Will Bashar al-Assad cease to be president of Syria before 1 January 2020? ,100%,0.001,0.005,-0.004
+"Jan 1, 2020 12:00PM ","Before 1 January 2020, will the U.S. President sign legislation increasing the number of exemptions for autonomous vehicles allowed per manufacturer by the Federal Motor Vehicle Safety Standards? ",100%,0.7,0.28,0.418
+"Jan 1, 2020 12:00PM ",Will North Korea conduct a nuclear test before 1 January 2020? ,100%,0.001,0.068,-0.068
+"Jan 1, 2020 12:00PM ","Between 5 July 2019 and 31 December 2019, will McDonald's announce that it will offer an alternative protein vegetarian burger in the United States? ",99%,0.045,1.16,-1.109
+"Jan 1, 2020 12:00PM ",Will Ruth Bader Ginsburg cease to be an Associate Justice of the U.S. Supreme Court before 1 January 2020? ,100%,0.008,0.132,-0.124
+"Jan 1, 2020 12:00PM ","Will there be a lethal confrontation in the South or East China Sea between the military forces, militia, or law enforcement personnel of China and another country before 1 January 2020? ",100%,0.003,0.035,-0.032
+"Jan 1, 2020 12:00PM ","Before 1 January 2020, will Velodyne announce the release of a LiDAR unit with a maximum range of 400 meters or more? ",70%,0.034,0.156,-0.086
+"Jan 1, 2020 12:00PM ","Before 1 January 2020, will General Motors launch a ride-hailing service open to the public in the U.S. which uses autonomous vehicles? ",100%,0.057,0.019,0.038
+"Jan 1, 2020 12:00PM ","Before 1 January 2020, will any change be made to the Russian Constitution that would allow Vladimir Putin to remain in a leadership role after his current term? ",2%,0,0.02,0
+"Jan 1, 2020 12:00PM ","Between 4 October 2019 and 31 December 2019, will anti-government protests in Hong Kong result in three or more fatalities? ",13%,0,0.24,-0.03
+"Jan 1, 2020 12:00PM ","Before 1 January 2020, will the Federal Communications Commission (FCC) vote in favor of granting a waiver petition [GN Docket No. 18-357] to allow for the further deployment of Cellular Vehicle-to-Everything (C-V2X) technology? ",99%,0.04,0.411,-0.369
+"Jan 1, 2020 12:00PM ",When will Nicolas Maduro cease to be president of Venezuela? ,97%,0.078,0.135,-0.055
+"Jan 1, 2020 12:00PM ","Before 1 January 2020, will the UK and the EU adopt an agreement on which customs territory Northern Ireland will be located in after the end of any Brexit transition period? ",97%,0.05,0.293,-0.235
+"Jan 1, 2020 12:00PM ","Before 1 January 2020, will any EU member state besides the UK set a date for a referendum on leaving the EU or the eurozone? ",100%,0,0.009,-0.009
+"Jan 1, 2020 12:00PM ",Will legislation eliminating the unit limit per manufacturer for the U.S. federal electric vehicle tax credit become law before 1 January 2020? ,100%,0.054,0.034,0.02
+"Jan 1, 2020 12:00PM ","Before 1 January 2020, will Tesla release an Autopilot feature designed to navigate traffic lights? ",100%,0.674,0.116,0.558
