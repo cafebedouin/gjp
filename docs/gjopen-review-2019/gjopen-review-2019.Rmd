@@ -79,6 +79,7 @@ Crowd was low. I went contrary based on some movement in committee and the obvio
 **4.  Will California's Pacific Gas and Electric Company file for bankruptcy before 1 November 2019?**
 
 I thought the California legislature would protect Pacific Gas and Electric Company. One lesson here is that it is difficult to gauge all relevant political considerations in a political decision like this one. Another is that we should weigh toward the status quo. If the legislature does nothing, then the situation was such that Pacific Gas and Electric Company has to file for bankruptcy. I simply had unwarranted confidence that the legislature would have to step in and got burned on this question.
+
 **5. Will Robert Mueller cease to be Special Counsel before 1 January 2020?**
 
 I relied too much on base rates. I ended up doing better than the predicted Brier score because it became obvious, before the question closed, how it was going to resolve. However, I disbelieved it for longer than I should have. My rationale for this question:
@@ -139,7 +140,8 @@ The key to this question was the procedure. It came close, but it did not happen
 
 **15. Will the United States experience two consecutive quarters of a negative real GDP growth rate in 2019? **
 
-The only reason why this one made this list is that I called it early.	       
+The only reason why this one made this list is that I called it early.	 
+
 **16. What will be the closing value of the S&P/TSX Composite Index on 31 October 2019? **
 
 In combination with the time-series R script, there is simply no substitute for an automated update regime that can take current price and do a walk through historical value to come up with an on demand probability. It would be good to improve this using some randomness, such as a series of random walks through the data to give more conservative prices. As it stands, the straight walk method tends to give about a -0.07 edge over GJOpen crowd and it gave a -0.02 edge over Supers on the one question I used it with in that forum.
