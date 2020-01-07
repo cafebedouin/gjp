@@ -147,7 +147,9 @@ defun_fred <- function(code="UNRATE",
   # Filter out days with value of "."
   df <- filter(df, value != ".") 
   View(df)
-  
+
+  # 
+    
   #################################################
   # Call desired forecasting functions
   

@@ -1,4 +1,4 @@
-# defun_simple_qprob.R 
+# defun_simple_probability.R 
 #################################################
 # Description: This function takes a dataframe 
 # with two columns (time, value). The first as.Date,
@@ -19,17 +19,17 @@
 # 0.084: Bin 5 - 3+
 # Number of observations: 1877
 
-defun_simple_qprob <- function(df,
-                               prob_results_title,
-                               closing_date,
+defun_simple_probability <- function(df,
+                                     prob_results_title,
+                                     closing_date,
   # freq options: daily, weekly, monthly, quarterly or yearly
-                               freq="daily",
+                                     freq="daily",
   # trading_days is only relevant for daily data
-                               trading_days=7,
-                               bin1,
-                               bin2,
-                               bin3,
-                               bin4) {
+                                     trading_days=7,
+                                     bin1,
+                                     bin2,
+                                     bin3,
+                                     bin4) {
   
   #################################################
   # Calculate time
