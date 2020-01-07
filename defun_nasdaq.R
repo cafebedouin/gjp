@@ -17,10 +17,11 @@ defun_nasdaq <- function(ticker="TSLA",
                        bin3=350, 
                        bin4=400,
                        probability_type="simple",
-                       prob_results_title="TSLA Probability Table",
-  # If you want a graph, indicate and add info
+                       prob_results_title=paste0(ticker, 
+                                                 " Probability Table"),
+                       # If you want a graph, indicate and add info
                        print_graph="yes",
-                       title="TSLA Historical Prices",
+                       title=paste0(ticker," Historical Prices"),
                        subtitle="",
                        info_source="NASDAQ",
                        file_name="TSLA",
@@ -31,7 +32,7 @@ defun_nasdaq <- function(ticker="TSLA",
   # Preliminaries
   
   # Define basepath and set working directory:
-  basepath = "~/Documents/programs/R/forecasting"
+  basepath = "~/Documents/R/forecasting"
   setwd(basepath)
   
   # Preventing scientific notation in graphs
@@ -58,11 +59,12 @@ defun_nasdaq <- function(ticker="TSLA",
                 ticker, "/stocks/", begin_date, "/", todays_date)
   
   # Live import
-  df <- read.csv(nurl, skip=1, header=TRUE)
+  df <- read.csv(nurl, skip=0, header=TRUE)
+  View(df)
   
   # Downloaded
   # df <- read.csv("/home/scott/Downloads/HistoricalQuotes.csv", 
-  #                   skip=1, header=TRUE)
+  #                   skip=0, header=TRUE)
 
   # Selects date and closing value
   df = df[, -c(3:6)]
