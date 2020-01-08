@@ -58,17 +58,18 @@
 
 # Replace defaults in function to desired, or 
 # call the function from console
-defun_fred <- function(code="UNRATE",
+defun_fred <- function(code="CP0000EZ19M086NEST",
                        begin_date="1990-01-01", # For analysis, not question
-                       closing_date="2020-11-01",
+                       closing_date="2020-06-01",
                        # freq options: daily, weekly, monthly, quarterly or yearly
                        freq="monthly",
                        trading_days=5, 
-                       bin1=4, 
-                       bin2=5, 
-                       bin3=6, 
-                       bin4=7,
+                       bin1=-10.0, 
+                       bin2=0.0, 
+                       bin3=1.0, 
+                       bin4=2.0,
                        probability_type="simple",
+                       annual_percent="yes",
                        prob_results_title=paste0(code,
                                                  " ",
                                                  freq,
@@ -108,6 +109,7 @@ defun_fred <- function(code="UNRATE",
   # Sources frequently called forecasting functions
   source("./functions/defun_graph.R")
   source("./functions/defun_simple_probability.R")
+  source("./functions/defun_annual_percent.R")  
   
   #################################################
   # Import, organize and output csv data
@@ -128,11 +130,11 @@ defun_fred <- function(code="UNRATE",
                 begin_date)
   
   # Live import
-  df <- read.csv(nurl, skip=0, header=TRUE)
+  # df <- read.csv(nurl, skip=0, header=TRUE)
   
   # Downloaded
-  # df <- read.csv("~/Downloads/UNRATE.csv", 
-  #                   skip=0, header=TRUE)
+  df <- read.csv("~/Downloads/CP0000EZ19M086NEST.csv", 
+                     skip=0, header=TRUE)
 
   # Names the columns
   colnames(df) <- c("date", "value")
@@ -146,19 +148,22 @@ defun_fred <- function(code="UNRATE",
   
   # Filter out days with value of "."
   df <- filter(df, value != ".") 
-  View(df)
-
-  # 
     
   #################################################
   # Call desired forecasting functions
   
-  if (probability_type == "simple")
+  # Change to annual percentage
+  if (annual_percent == "yes") { df <- defun_annual_percent(df, freq) }
+  
+  # Simple walk through historical values to generate probabilities
+  if (probability_type == "simple") {
     defun_simple_probability(df, prob_results_title,
                              closing_date, trading_days, freq,
-                             bin1, bin2, bin3, bin4)
+                             bin1, bin2, bin3, bin4) }
   
-  if (print_graph == "yes")
+  # Makes graphs
+  if (print_graph == "yes") {
     defun_graph(df, title, subtitle, info_source, file_name, 
                 graph_width, graph_height)
+  }
 }
