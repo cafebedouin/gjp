@@ -1,11 +1,11 @@
-# defun_annual_percent.R 
+# annual_percent.R 
 #################################################
 # Description: Changes a column of values into 
 # a percentage.
 
 
-defun_annual_percent <- function(df, 
-                                 freq="monthly") {
+annual_percent <- function(df, 
+                           freq="monthly") {
 
   #################################################
   # Load libraries. If library X is not installed

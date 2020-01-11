@@ -1,4 +1,4 @@
-# defun_sea_ice.R 
+# sea_ice.R 
 #################################################
 # Description: Pulls MASIE ice data, limits by sea, and runs a 
 # correlation matrix to determine which five years have trend lines 
@@ -17,13 +17,13 @@ gc()
 # "Yellow_Sea", "Cook_Inlet"
 
 # Replace defaults in function to desired, or call the function from console
-defun_sea_ice <- function(sea="Baltic_Sea", 
-                          day_one=1, 
-                          last_day=121) {
+sea_ice <- function(sea="Baltic_Sea", 
+                   day_one=1, 
+                   last_day=121) {
   days_start <- day_one
   days_end <- last_day
   sea_of_interest <- sea
-  sea_date <- Sys.Date()
+  todays_date <- Sys.Date()
 
   #################################################
   # Preliminaries
@@ -73,74 +73,74 @@ defun_sea_ice <- function(sea="Baltic_Sea",
   masie_tmp <- tidyr::extract(masie, yyyyddd, into = c("Year", "Day"), "(.{4})(.{3})", remove=FALSE)
 
   # Selecting the columns of interest
-  sea_select <- c("Year", "Day", sea_of_interest)
+  df_select <- c("Year", "Day", sea_of_interest)
 
   # Pulling column data from masie and putting it in the data frame
-  sea_area <- masie_tmp[sea_select] 
+  df_area <- masie_tmp[df_select] 
 
   # Adding column names, changing sea name to sea ice
-  colnames(sea_area) <- c("Year", "Day", "Sea_Ice")
+  colnames(df_area) <- c("Year", "Day", "Sea_Ice")
 
   # Reshape the three columns into a table, fix names, and export csv file
-  sea_table <- reshape(sea_area, direction="wide", idvar="Day", timevar="Year")
-  names(sea_table) <- gsub("Sea_Ice.", "", names(sea_table))
+  df_table <- reshape(df_area, direction="wide", idvar="Day", timevar="Year")
+  names(df_table) <- gsub("Sea_Ice.", "", names(df_table))
 
   # Creating a cvs file of changed data
-  write.csv(sea_table, file=paste0("./output/sea-ice-in-", sea, "-table-", sea_date, ".csv")) 
+  write.csv(df_table, file=paste0("./output/sea-ice-in-", sea, "-table-", todays_date, ".csv")) 
 
   #################################################
   # Correlation Matrix
-  sea_rcorr <- rcorr(as.matrix(sea_table[, -c(1)]))
-  sea_coeff <- sea_rcorr$r
+  df_rcorr <- rcorr(as.matrix(df_table[, -c(1)]))
+  df_coeff <- df_rcorr$r
 
-  pdf(paste0("./output/sea-ice-in-", sea, "-correlation-", sea_date, ".pdf"))
-  corrplot(sea_coeff, method="pie", type="lower")
+  pdf(paste0("./output/sea-ice-in-", sea, "-correlation-", todays_date, ".pdf"))
+  corrplot(df_coeff, method="pie", type="lower")
   dev.off()
   
   # Takes current year, sorts the matches, take the year column names,
   # and then assigns them values for the graph
-  sea_matches <- sea_coeff[,ncol(sea_coeff)]
-  sea_matches <- sort(sea_matches, decreasing = TRUE)
-  sea_matches <- names(sea_matches)
-  current_year <- as.numeric(sea_matches[1])
-  matching_year1 <- as.numeric(sea_matches[2])
-  matching_year2 <- as.numeric(sea_matches[3])
-  matching_year3 <- as.numeric(sea_matches[4])
-  matching_year4 <- as.numeric(sea_matches[5])
-  matching_year5 <- as.numeric(sea_matches[6])
+  df_matches <- df_coeff[,ncol(df_coeff)]
+  df_matches <- sort(df_matches, decreasing = TRUE)
+  df_matches <- names(df_matches)
+  current_year <- as.numeric(df_matches[1])
+  matching_year1 <- as.numeric(df_matches[2])
+  matching_year2 <- as.numeric(df_matches[3])
+  matching_year3 <- as.numeric(df_matches[4])
+  matching_year4 <- as.numeric(df_matches[5])
+  matching_year5 <- as.numeric(df_matches[6])
   
   #################################################
   # Historic Trends Graph
-  sea_graph <- sea_area
+  df_graph <- df_area
 
   # Filtering results for 5 year comparison, against 5 closest correlated years 
-  sea_graph <- filter(sea_graph, Year == current_year | Year == matching_year1 |
+  df_graph <- filter(df_graph, Year == current_year | Year == matching_year1 |
                       Year == matching_year2 | Year == matching_year3 | 
                       Year ==matching_year4 | Year == matching_year5)
 
   # These variables need to be numerical
-  sea_graph$Day <- as.numeric(sea_graph$Day)
-  sea_graph$Sea_Ice <- as.numeric(sea_graph$Sea_Ice)
+  df_graph$Day <- as.numeric(df_graph$Day)
+  df_graph$Sea_Ice <- as.numeric(df_graph$Sea_Ice)
 
   # Filtering results into period of interest
-  sea_graph <- filter(sea_graph, Day <= days_end)  
-  sea_graph <- filter(sea_graph, Day >= days_start)
+  df_graph <- filter(df_graph, Day <= days_end)  
+  df_graph <- filter(df_graph, Day >= days_start)
 
   # The variable used to color and split the data should be a factor so lines are properly drawn
-  sea_graph$Year <- factor(sea_graph$Year)
+  df_graph$Year <- factor(df_graph$Year)
 
-  # Lays out sea_graph by day with a colored line for each year
-  sea_plot <- ggplot() + 
+  # Lays out df_graph by day with a colored line for each year
+  df_plot <- ggplot() + 
     ggtitle(paste("Incidence of Sea Ice in", sea_of_interest)) +
-    geom_line(data = sea_graph, aes(x = Day, y = Sea_Ice, color = Year)) + 
+    geom_line(data = df_graph, aes(x = Day, y = Sea_Ice, color = Year)) + 
     scale_x_continuous()
 
-  sea_plot
+  df_plot
   ggsave(filename=paste0("./output/sea-ice-in-", sea_of_interest, 
-                         "-plot-", sea_date, ".pdf"), plot=sea_plot)
+                         "-plot-", todays_date, ".pdf"), plot=df_plot)
 
-  summary(sea_graph)
-  sd(sea_graph$Sea_Ice)
+  summary(df_graph)
+  sd(df_graph$Sea_Ice)
 
-  return(sea_graph[nrow(sea_graph), ncol(sea_graph)])
+  return(df_graph[nrow(df_graph), ncol(df_graph)])
 }

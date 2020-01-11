@@ -1,4 +1,4 @@
-# defun_yield.R 
+# yield.R 
 #################################################
 # Description: This script is for scraping yield data
 # from the Treasury website limiting to the yield of
@@ -12,27 +12,28 @@ gc()
 
 #################################################
 # Function
-defun_yield <- function(closing_date="2020-12-31",
-                        begin_year=2013, # > than this year, for analysis
-                        trading_days=7, 
-                        bin1=0.0, 
-                        bin2=2.0, 
-                        bin3=2.5, 
-                        bin4=3.0,
-                        probability_type="simple",
-                        prob_results_title="Treasury Yields for 30 Year",
+yield <- function(closing_date="2020-12-31",
+                  begin_year=2013, # > than this year, for analysis
+                  trading_days=7, 
+                  freq="daily",
+                  bin1=0.0, 
+                  bin2=2.0, 
+                  bin3=2.5, 
+                  bin4=3.0,
+                  probability_type="simple",
+                  prob_results_title="Treasury Yields for 30 Year",
     # If you want a graph, indicate and add info
-                        print_graph="yes",
-                        title="Treasury Yields for 30 Year",
-                        subtitle="",
-                        info_source="U.S. Treasury",
-                        file_name="treasury",
-                        graph_width=1250,
-                        graph_height=450,
+                  graph="yes",
+                  title="Treasury Yields for 30 Year",
+                  subtitle="",
+                  info_source="U.S. Treasury",
+                  file_name="treasury",
+                  graph_width=1250,
+                  graph_height=450,
     # Script does analysis for only one Treasury Yield at a time.                    
     # Yield Codes:  Y1M = 1 Month Yield, Y2M = 2 Month Yield Y3M, Y6M, 
     # Y1Y = 1 Year Yield, Y2Y, Y3Y, Y5Y, Y7Y, Y10Y, Y20Y, Y30Y                       
-                        treasury_code="Y30Y") {
+                  treasury_code="Y30Y") {
 
   #################################################
   # Libraries
@@ -43,10 +44,6 @@ defun_yield <- function(closing_date="2020-12-31",
   library(xml2)
   library(lubridate)
   library(dplyr)
-  
-  # Sources frequently called forecasting functions
-  source("./functions/defun_graph.R")
-  source("./functions/defun_simple_probability.R")
     
   #################################################
   # Import & Parse Treasury Data
@@ -57,10 +54,10 @@ defun_yield <- function(closing_date="2020-12-31",
                 begin_year)  
 
   # Script testing with downloaded file
-  # xmlobj <- read_xml("~/Downloads/DailyTreasuryYieldCurveRateData.xml")
+  xmlobj <- read_xml("~/Downloads/DailyTreasuryYieldCurveRateData.xml")
 
   # Live script
-  xmlobj <- read_xml(yurl)
+  # xmlobj <- read_xml(yurl)
   
   df <- data.frame( 
     id   = xml_find_all(xmlobj, ".//d:Id" ) %>% xml_attr( "id" ),
@@ -102,11 +99,13 @@ defun_yield <- function(closing_date="2020-12-31",
   # Call desired forecasting functions
   
   if (probability_type == "simple")
-    defun_simple_probability(df, prob_results_title,
-                             closing_date, trading_days, 
-                             bin1, bin2, bin3, bin4)
+    source("./functions/simple_probability.R")
+    simple_probability(df, prob_results_title,
+                       closing_date, freq, trading_days, 
+                       bin1, bin2, bin3, bin4)
   
-  if (print_graph == "yes")
-    defun_graph(df, title, subtitle, info_source, file_name, 
-                graph_width, graph_height)
+  if (graph == "yes")
+    source("./functions/graph.R")
+    graph(df, title, subtitle, info_source, file_name, 
+          graph_width, graph_height)
 }

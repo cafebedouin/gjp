@@ -1,4 +1,4 @@
-# defun_simple_probability.R 
+# simple_probability.R 
 #################################################
 # Description: This function takes a dataframe 
 # with two columns (time, value). The first as.Date,
@@ -19,17 +19,17 @@
 # 0.084: Bin 5 - 3+
 # Number of observations: 1877
 
-defun_simple_probability <- function(df,
-                                     prob_results_title,
-                                     closing_date,
+simple_probability <- function(df,
+                               prob_results_title,
+                               closing_date,
   # freq options: daily, weekly, monthly, quarterly or yearly
-                                     freq="daily",
+                               freq=daily,
   # trading_days is only relevant for daily data
-                                     trading_days=7,
-                                     bin1,
-                                     bin2,
-                                     bin3,
-                                     bin4) {
+                               trading_days=7,
+                               bin1,
+                               bin2,
+                               bin3,
+                               bin4) {
   
   #################################################
   # Calculate time
@@ -46,10 +46,13 @@ defun_simple_probability <- function(df,
     remaining_time <- day_difference - non_trading_days 
   }  
 
-#  if (freq == "weekly") { remaining_time <- remaining_weeks }
-  if (freq == "monthly") { remaining_time <- remaining_weeks / 4 }  
-  if (freq == "quarterly") { remaining_time <- remaining_weeks / 13 }
-  if (freq == "yearly") { remaining_time <- remaining_weeks / 52 }
+  #  if (freq == "weekly") { remaining_time <- remaining_weeks }
+  if (freq == "monthly") { 
+    remaining_time <- round(sum(remaining_weeks / 4), digits = 0) }  
+  if (freq == "quarterly") { 
+    remaining_time <- round(sum(remaining_weeks / 12), digits = 0) }
+  if (freq == "yearly") { 
+    remaining_time <- round(sum(remaining_weeks / 52), digits = 0) }  
     
   #################################################
   # Check formating

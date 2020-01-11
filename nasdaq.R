@@ -1,4 +1,4 @@
-# defun_nasdaq.R 
+# nasdaq.R 
 #################################################
 # Description: Pulls NASDAQ data by ticker and 
 # from the NASDAQ website, allows you to limit the 
@@ -8,25 +8,26 @@
 
 # Replace defaults in function to desired, or 
 # call the function from console
-defun_nasdaq <- function(ticker="TSLA", 
-                       begin_date="2014-01-01", # For analysis, not question
-                       closing_date="2020-12-31", 
-                       trading_days=5, 
-                       bin1=250, 
-                       bin2=300, 
-                       bin3=350, 
-                       bin4=400,
-                       probability_type="simple",
-                       prob_results_title=paste0(ticker, 
-                                                 " Probability Table"),
-                       # If you want a graph, indicate and add info
-                       print_graph="yes",
-                       title=paste0(ticker," Historical Prices"),
-                       subtitle="",
-                       info_source="NASDAQ",
-                       file_name="TSLA",
-                       graph_width=1250,
-                       graph_height=450) {
+nasdaq <- function(ticker="TSLA", 
+                   begin_date="2014-01-01", # For analysis, not question
+                   closing_date="2020-12-31", 
+                   trading_days=5,
+                   freq="daily",
+                   bin1=250, 
+                   bin2=300, 
+                   bin3=350, 
+                   bin4=400,
+                   probability_type="simple",
+                   prob_results_title=paste0(ticker, 
+                                             " Probability Table"),
+# If you want a graph, indicate and add info
+                   graph="yes",
+                   title=paste0(ticker," Historical Prices"),
+                   subtitle="",
+                   info_source="NASDAQ",
+                   file_name="TSLA",
+                   graph_width=1250,
+                   graph_height=450) {
   
   #################################################
   # Preliminaries
@@ -48,8 +49,8 @@ defun_nasdaq <- function(ticker="TSLA",
   library(data.table)
   
   # Sources frequently called forecasting functions
-  source("./functions/defun_graph.R")
-  source("./functions/defun_simple_probability.R")
+  source("./functions/graph.R")
+  source("./functions/simple_probability.R")
 
   #################################################
   # Import, organize and output csv data
@@ -84,13 +85,14 @@ defun_nasdaq <- function(ticker="TSLA",
 
   #################################################
   # Call desired forecasting functions
-  
   if (probability_type == "simple")
-    defun_simple_probability(df, prob_results_title,
-                             closing_date, trading_days, 
-                             bin1, bin2, bin3, bin4)
+    source("./functions/simple_probability.R")
+    simple_probability(df, prob_results_title,
+                       closing_date, freq, trading_days, 
+                       bin1, bin2, bin3, bin4)
   
-  if (print_graph == "yes")
-    defun_graph(df, title, subtitle, info_source, file_name, 
-                graph_width, graph_height)
+  if (graph == "yes")
+    source("./functions/graph.R")    
+    graph(df, title, subtitle, info_source, file_name, 
+          graph_width, graph_height)
 }

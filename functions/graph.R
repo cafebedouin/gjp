@@ -1,4 +1,4 @@
-# defun_graph.R 
+# graph.R 
 #################################################
 # Description: Generates a graph from time series
 # using BBC style: https://bbc.github.io/rcookbook/
@@ -8,13 +8,13 @@ rm(list=ls()) # Clear memory
 gc()
 
 # Replace defaults in function to desired, or call the function from console
-defun_graph <- function(df,
-                        title="",
-                        subtitle="",
-                        info_source="",
-                        file_name="default",
-                        graph_width=1250,
-                        graph_height=450) {
+graph <- function(df,
+                  title="",
+                  subtitle="",
+                  info_source="",
+                  file_name="default",
+                  graph_width=1250,
+                  graph_height=450) {
   
   #################################################
   # Load libraries. If library X is not installed

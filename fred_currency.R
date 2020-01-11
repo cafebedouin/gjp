@@ -1,12 +1,10 @@
-# defun_fred.R 
+# fred_currency.R 
 #################################################
 # Description: Pulls data from the FRED website on 
-# currencies, precious metals, unemployment, etc.
-# allows you to limit the data set, set the 
-# frequency interval, then provides 
-# a probability base line against <=5 bins or 
-# 4 price points using current price and walk 
-# through the outcomes in set.
+# currencies and allows you to limit the 
+# data set, then provides a probability base line
+# against <=5 bins or 4 price points using current
+# price and walk through the outcomes in set.
 # 
 # Exchange Rate codes:
 # U.S. / Australia Foreign Exchange Rate (DEXUSAL)
@@ -32,54 +30,26 @@
 # Thailand / U.S. Foreign Exchange Rate (DEXTHUS)
 # U.S. / U.K. Foreign Exchange Rate (DEXUSUK)
 # Venezuela / U.S. Foreign Exchange Rate (DEXVZUS)
-#
-# Precious Metal codes
-# Gold Price, 10:30 A.M., LBMA, U.S. Dollars (GOLDAMGBD228NLBM)
-# Gold Price, 3:00 P.M., LBMA, U.S. Dollars (GOLDPMGBD228NLBM)
-# Gold Price, 10:30 A.M., British Pounds (GOLDAMGBD229NLBM)
-# Gold Price, 3:00 P.M., LBMA, British Pounds (GOLDPMGBD229NLBM)
-# Gold Price, 10:30 A.M., LBMA, Euros (GOLDAMGBD230NLBM)
-# Gold Price, 3:00 P.M., LBMA, Euros (GOLDPMGBD230NLBM)
-# Silver Price, 12:00 noon, LBMA, U.S. Dollars (SLVPRUSD)
-# Silver is available in many currency denominations.
-#
-# NASDAQ, S&P, Dow
-# NASDAQ Composite Index (NASDAQCOM)
-# NASDAQ 100 Index (NASDAQ100)
-# S&P 500 (SP500)
-# Dow Jones Industrial Average (DJIA)
-# Dow Jones Transportation Average (DJTA)
-# Dow Jones Utility Average (DJUA)
-# Dow Jones Composite Average (DJCA)
-#
-# Misc
-# Crude Oil Prices: Brent - Europe (DCOILBRENTEU)
-# University of Michigan: Consumer Sentiment (UMCSENT)
 
 # Replace defaults in function to desired, or 
 # call the function from console
-defun_fred <- function(code="CP0000EZ19M086NEST",
-                       begin_date="1990-01-01", # For analysis, not question
-                       closing_date="2020-06-01",
-                       # freq options: daily, weekly, monthly, quarterly or yearly
-                       freq="monthly",
+fred_currency <- function(code="DEXHKUS",
+                       begin_date="2009-01-01", # For analysis, not question
+                       closing_date="2020-06-12", 
                        trading_days=5, 
-                       bin1=-10.0, 
-                       bin2=0.0, 
-                       bin3=1.0, 
-                       bin4=2.0,
+                       bin1=7.851, 
+                       bin2=10, 
+                       bin3=20, 
+                       bin4=30,
                        probability_type="simple",
-                       annual_percent="yes",
-                       prob_results_title=paste0(code,
-                                                 " ",
-                                                 freq,
-                                                " probability table"),
+                       prob_results_title=paste0(currency, 
+                                                " Currency Probability Table"),
                        # If you want a graph, indicate and add info
                        print_graph="no",
-                       title=paste0(code, freq, " Title "),
+                       title=paste0(currency, " Historical Prices"),
                        subtitle="",
-                       info_source="ADP",
-                       file_name="ADP",
+                       info_source="FRED",
+                       file_name="FRED",
                        graph_width=1250,
                        graph_height=450) {
   
@@ -109,17 +79,21 @@ defun_fred <- function(code="CP0000EZ19M086NEST",
   # Sources frequently called forecasting functions
   source("./functions/defun_graph.R")
   source("./functions/defun_simple_probability.R")
-  source("./functions/defun_annual_percent.R")  
   
   #################################################
   # Import, organize and output csv data
   
   # Create url to access data
   nurl = paste0("https://fred.stlouisfed.org/graph/fredgraph.csv?",
-                "&id=",
-                code, "&cosd=",
+                "bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans",
+                "&graph_bgcolor=%23ffffff&height=450&mode=fred&",
+                "recession_bars=on&txtcolor=%23444444&ts=12&tts=12",
+                "&width=1168&nt=0&thu=0&trc=0&show_legend=yes&",
+                "show_axis_titles=yes&show_tooltip=yes&id=",
+                currency, "&scale=left&cosd=",
                 begin_date, "&coed=",
-                todays_date, 
+                todays_date, "&line_color=%234572a7&",
+                "link_values=false&line_style=solid&",
                 "mark_type=none&mw=3&lw=2&ost=-99999&",
                 "oet=99999&mma=0&fml=a&fq=Daily&fam=avg",
                 "&fgst=lin&fgsnd=",
@@ -130,15 +104,18 @@ defun_fred <- function(code="CP0000EZ19M086NEST",
                 begin_date)
   
   # Live import
-  # df <- read.csv(nurl, skip=0, header=TRUE)
+  df <- read.csv(nurl, skip=0, header=TRUE)
   
   # Downloaded
-  df <- read.csv("~/Downloads/CP0000EZ19M086NEST.csv", 
-                     skip=0, header=TRUE)
+  # df <- read.csv("~/Downloads/DEXUSEU.csv", 
+  #                   skip=0, header=TRUE)
 
   # Names the columns
   colnames(df) <- c("date", "value")
-
+  
+  # Filter out days with value of "."
+  df <- filter(df, value != ".") 
+  
   # Reverse dates 
   df <- df[rev(order(df$date)),]   
   
@@ -146,24 +123,16 @@ defun_fred <- function(code="CP0000EZ19M086NEST",
   df$date <- as.Date(df$date)
   df$value <- as.vector(df$value)
   
-  # Filter out days with value of "."
-  df <- filter(df, value != ".") 
-    
   #################################################
   # Call desired forecasting functions
-  
-  # Change to annual percentage
-  if (annual_percent == "yes") { df <- defun_annual_percent(df, freq) }
-  
-  # Simple walk through historical values to generate probabilities
-  if (probability_type == "simple") {
-    defun_simple_probability(df, prob_results_title,
-                             closing_date, trading_days, freq,
-                             bin1, bin2, bin3, bin4) }
-  
-  # Makes graphs
-  if (print_graph == "yes") {
-    defun_graph(df, title, subtitle, info_source, file_name, 
-                graph_width, graph_height)
-  }
+  if (probability_type == "simple")
+    source("./functions/simple_probability.R")
+    simple_probability(df, prob_results_title,
+                       closing_date, trading_days, 
+                       bin1, bin2, bin3, bin4)
+
+  if (graph == "yes")
+    source("./functions/graph.R")   
+    graph(df, title, subtitle, info_source, file_name, 
+          graph_width, graph_height)
 }
