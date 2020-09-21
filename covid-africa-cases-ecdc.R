@@ -48,19 +48,19 @@ covid <- function() {
   # Import, organize and output csv data
 
   # Download data for testing script 
-  df <- read.csv(paste0("/home/scott/Downloads/ecdc-data.csv"), 
-                 na.strings = "", fileEncoding = "UTF-8-BOM")
+  # df <- read.csv(paste0("/home/scott/Downloads/ecdc-data.csv"), 
+  #               na.strings = "", fileEncoding = "UTF-8-BOM")
   #               skip=0, header=TRUE)
 
   # Live import, switch to testing line when modifying script
-  # df <- read.csv("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv", 
-  #                 na.strings = "", fileEncoding = "UTF-8-BOM")
+  df <- read.csv("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv", 
+                   na.strings = "", fileEncoding = "UTF-8-BOM")
  
   df <- filter(df, continentExp == "Africa")
 
   # Drop all the columns but the ones of interest
   # Keep either 5 for cases or 6 for deaths 
-  df <- df[ -c(2,3,4,6,8,9,10,11) ]
+  df <- df[ -c(2,3,4,6,8,9,10,11,12) ]
   
   # Set datatypes
   df$dateRep <- as.Date(df$dateRep, format="%d/%m/%Y")
@@ -98,10 +98,10 @@ covid <- function() {
   # Uncomment for cumulative numbers, comment out for daily
   africa[, 2] <- cumsum(africa[, 2])
   
-  # df_add <- read.csv(paste0("~/Downloads/africa-end.csv"), 
-  #                   skip=0, header=TRUE)
+  df_add <- read.csv(paste0("~/Downloads/africa-end.csv"), 
+                     skip=0, header=TRUE)
   
-  # africa <- rbind(africa, df_add)
+  africa <- rbind(africa, df_add)
   
   plot <- ggplot() + 
     geom_line(data = africa, aes(x = date, y = total)) +
@@ -116,8 +116,8 @@ covid <- function() {
   finalise_plot(plot_name = plot,
                 source = "Source: ECDC",
                 save_filepath = paste0("./output/covid-africa-ecdc-", todays_date, ".png"),
-                width_pixels = 1000,
-                height_pixels =1000,
+                width_pixels = 750,
+                height_pixels =500,
                 logo_image_path = paste0("./branding/logo.png"))
   
   ###############################################

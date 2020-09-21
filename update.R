@@ -132,6 +132,25 @@ fred(code="DEXKOUS",
      graph_height=450) 
 
 source("nasdaq.R")
+nasdaq(ticker="UBER:US", 
+       begin_date="2015-01-01", # For analysis, not question
+       closing_date="2020-12-31", 
+       trading_days=5, 
+       bin1=20, 
+       bin2=29, 
+       bin3=38, 
+       bin4=46,
+       probability_type="simple",
+       # If you want a graph, indicate and add info
+       graph="no",
+       title="",
+       subtitle="",
+       info_source="NASDAQ",
+       file_name="UBER",
+       graph_width=1250,
+       graph_height=450)
+
+source("nasdaq.R")
 nasdaq(ticker="TSLA", 
        begin_date="2015-01-01", # For analysis, not question
        closing_date="2020-12-31", 
@@ -149,6 +168,51 @@ nasdaq(ticker="TSLA",
        file_name="TSLA",
        graph_width=1250,
        graph_height=450)
+
+source("nasdaq.R")
+nasdaq(ticker="TSLA", 
+       begin_date="2015-01-01", # For analysis, not question
+       closing_date="2020-09-22", 
+       trading_days=5, 
+       bin1=400, 
+       bin2=450, 
+       bin3=500, 
+       bin4=550,
+       probability_type="simple",
+       # If you want a graph, indicate and add info
+       graph="yes",
+       title="",
+       subtitle="",
+       info_source="NASDAQ",
+       file_name="TSLA",
+       graph_width=1250,
+       graph_height=450)
+
+# Treasury Yield for 30 Years
+source("yield.R")
+yield(closing_date="2020-09-22",
+      begin_year=2015, # > than this year, for analysis
+      trading_days=7, 
+      bin1=1.2, 
+      bin2=1.4, 
+      bin3=1.6, 
+      bin4=1.8,
+      probability_type="simple",
+      prob_results_title="Treasury Yields for 30 Year",
+      # If you want a graph, indicate and add info
+      graph="no",
+      title="Treasury Yields for 30 Year",
+      subtitle="",
+      info_source="U.S. Treasury",
+      file_name="treasury",
+      graph_width=1250,
+      graph_height=450,
+      # Script does analysis for only one Treasury Yield at a time.                    
+      # Yield Codes:  Y1M = 1 Month Yield, Y2M = 2 Month Yield Y3M, Y6M, 
+      # Y1Y = 1 Year Yield, Y2Y, Y3Y, Y5Y, Y7Y, Y10Y, Y20Y, Y30Y                       
+      treasury_code="Y30Y")
+
+
 
 # Treasury Yield for 30 Years
 source("yield.R")

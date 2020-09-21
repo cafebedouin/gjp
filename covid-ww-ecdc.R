@@ -57,7 +57,7 @@ covid <- function() {
                    na.strings = "", fileEncoding = "UTF-8-BOM")
   
   # Drop all the columns but the ones of interest
-  df <- df[ -c(2,3,4,5,8,9,10,11) ]
+  df <- df[ -c(2,3,4,5,8,9,10,11,12) ]
   
   # Set datatypes
   df$dateRep <- as.Date(df$dateRep, format="%d/%m/%Y")

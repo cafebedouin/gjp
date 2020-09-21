@@ -25,10 +25,6 @@ flu <- function(flu_file="./data/FluNetInteractiveReport.csv",
   #################################################
   #PRELIMINARIES
 
-  #Define basepath and set working directory:
-  basepath = "~/Documents/programs/R/forecasting"
-  setwd(basepath)
-
   #Preventing scientific notation in graphs
   options(scipen=999)
 
@@ -73,7 +69,6 @@ flu <- function(flu_file="./data/FluNetInteractiveReport.csv",
 
   # Reshape the table into grid
   flu_table <- reshape(flu_table, direction="wide", idvar="Week", timevar="Year")
-  View(flu_table)
 
   # Fix column names after reshaping
   names(flu_table) <- gsub("Confirmed_Flu.", "", names(flu_table))

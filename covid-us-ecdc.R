@@ -55,9 +55,9 @@ covid <- function() {
   # Live import, switch to testing line when modifying script
    df <- read.csv("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv", 
                    na.strings = "", fileEncoding = "UTF-8-BOM")
-  
+
   # Drop all the columns but the ones of interest
-  df <- df[ -c(2,3,4,5,8,9,10,11) ]
+  df <- df[ -c(2,3,4,5,8,9,10,11,12) ]
   
   # Set datatypes
   df$dateRep <- as.Date(df$dateRep, format="%d/%m/%Y")
@@ -86,30 +86,27 @@ covid <- function() {
 
   # Sum by date
   us$us <- rowSums(count)
-  
-  # Check if number of columns has changed
-  # View(us)
-  # }  
 
   # US only
   us <- us[ c(1,67) ]
   
+  # Check if number of columns has changed
+  # View(us)
+  # }  
+  
   # Uncomment for cumulative numbers, comment out for daily deaths
-  # us[, 2] <- cumsum(us[, 2])
+  us[, 2] <- cumsum(us[, 2])
   
   # Add in end date and value 
   
-  # df_add <- read.csv(paste0("~/Downloads/us-end.csv"), 
-  #                   skip=0, header=TRUE)
+  df_add <- read.csv(paste0("~/Downloads/us-end.csv"), 
+                     skip=0, header=TRUE)
   
-  # us <- rbind(us, df_add)
-  
-  View(us)
+  us <- rbind(us, df_add)
 
   plot <- ggplot() + 
     geom_line(data = us, aes(x = date, y = United_States_of_America)) +
-  #  geom_vline(xintercept=todays_date, linetype=4, colour="black") +
-    geom_vline(yintercept=2143, linetype=4, colour="blue") +
+    geom_vline(xintercept=todays_date, linetype=4, colour="black") +
     bbc_style() +
     labs(title=paste0("United States Deaths, ", todays_date),
          subtitle = "") +
