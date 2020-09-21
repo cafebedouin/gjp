@@ -23,6 +23,7 @@ simple_probability <- function(df,
                                prob_results_title,
                                closing_date,
   # freq options: daily, weekly, monthly, quarterly or yearly
+  # This is a mess and needs to be fixed, use daily.
                                freq=daily,
   # trading_days is only relevant for daily data
                                trading_days=7,
@@ -66,7 +67,7 @@ simple_probability <- function(df,
 
   # Puts into date decreasing order
   df <- df[rev(order(as.Date(df$date), na.last = NA)),]
-
+  
   # Putting into vectors format
   df$value <- as.vector(df$value) 
   df$date <- as.Date(df$date)
@@ -85,7 +86,7 @@ simple_probability <- function(df,
   for (i in 1:prob_rows) {
     prob_calc[i] <- df$value[i] - df$value[i+remaining_time]
   }
-
+  
   # Adjusted against current values to match prob_calc
   adj_bin1 <- bin1 - current_value
   adj_bin2 <- bin2 - current_value
