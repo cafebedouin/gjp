@@ -57,7 +57,6 @@ defun_co2 <- function(day_one=1, last_day=336) {
   # install.packages('X') 
   library(data.table)
   library(lubridate)
-  library(stringr)
   library(ggplot2)
   library(dplyr)
   library(tidyr)

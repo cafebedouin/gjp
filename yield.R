@@ -54,10 +54,10 @@ yield <- function(closing_date="2020-12-31",
                 begin_year)  
 
   # Script testing with downloaded file
-  xmlobj <- read_xml("~/Downloads/DailyTreasuryYieldCurveRateData.xml")
+  # xmlobj <- read_xml("~/Downloads/DailyTreasuryYieldCurveRateData.xml")
 
   # Live script
-  # xmlobj <- read_xml(yurl)
+  xmlobj <- read_xml(yurl)
   
   df <- data.frame( 
     id   = xml_find_all(xmlobj, ".//d:Id" ) %>% xml_attr( "id" ),

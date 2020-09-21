@@ -14,7 +14,7 @@ gc()
 
 #################################################
 # Function
-brent <- function(closing_date="2020-04-01",
+brent <- function(closing_date="2020-03-31",
                   start_date="2014-01-01",
                   trading_days=5, 
                   freq="daily",

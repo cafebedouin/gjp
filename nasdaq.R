@@ -9,7 +9,7 @@
 # Replace defaults in function to desired, or 
 # call the function from console
 nasdaq <- function(ticker="TSLA", 
-                   begin_date="2014-01-01", # For analysis, not question
+                   begin_date="2015-01-01", # For analysis, not question
                    closing_date="2020-12-31", 
                    trading_days=5,
                    freq="daily",
@@ -56,16 +56,16 @@ nasdaq <- function(ticker="TSLA",
   # Import, organize and output csv data
   
   # Create url to access data
-  nurl = paste0("https://www.nasdaq.com/api/v1/historical/",
-                ticker, "/stocks/", begin_date, "/", todays_date)
+  #nurl = paste0("https://www.nasdaq.com/api/v1/historical/",
+  #              ticker, "/stocks/", begin_date, "/", todays_date)
   
   # Live import
-  df <- read.csv(nurl, skip=0, header=TRUE)
-  View(df)
+  #df <- read.csv(nurl, skip=0, header=TRUE)
+  #View(df)
   
   # Downloaded
-  # df <- read.csv("/home/scott/Downloads/HistoricalQuotes.csv", 
-  #                   skip=0, header=TRUE)
+   df <- read.csv("/home/scott/Downloads/HistoricalQuotes.csv", 
+                     skip=0, header=TRUE)
 
   # Selects date and closing value
   df = df[, -c(3:6)]

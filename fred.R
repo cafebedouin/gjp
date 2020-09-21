@@ -60,10 +60,10 @@
 # call the function from console
 fred <- function(code="",
                  begin_date="", # For analysis, not question
-                 closing_date="",
+                 closing_date="2020-11-01",
                  # freq options: daily, weekly, monthly, quarterly or yearly
                  freq,
-                 trading_days, 
+                 trading_days=5, 
                  bin1, 
                  bin2, 
                  bin3, 
@@ -75,7 +75,7 @@ fred <- function(code="",
                                            freq,
                                            " probability table"),
                  # If you want a graph, indicate and add info
-                 print_graph="no",
+                 graph="no",
                  title=paste0(code, freq, " Title "),
                  subtitle="",
                  info_source="ADP",
@@ -106,11 +106,6 @@ fred <- function(code="",
   library(data.table)
   library(dplyr)
   
-  # Sources frequently called forecasting functions
-  source("./functions/defun_graph.R")
-  source("./functions/defun_simple_probability.R")
-  source("./functions/defun_annual_percent.R")  
-  
   #################################################
   # Import, organize and output csv data
   
@@ -133,21 +128,22 @@ fred <- function(code="",
   df <- read.csv(nurl, skip=0, header=TRUE)
   
   # Downloaded
-  # df <- read.csv("~/Downloads/UNRATE.csv", 
+  # df <- read.csv(paste0("~/Downloads/", code, ".csv"), 
   #                   skip=0, header=TRUE)
-
+  
   # Names the columns
   colnames(df) <- c("date", "value")
-
-  # Reverse dates 
-  df <- df[rev(order(df$date)),]   
+  
+  # Filter out days with value of "."
+  df <- filter(df, value != ".") 
+  df %>% is.na()
   
   # Making sure data types are in the correct format
   df$date <- as.Date(df$date)
   df$value <- as.vector(df$value)
   
-  # Filter out days with value of "."
-  df <- filter(df, value != ".") 
+  # Reverse dates 
+  df <- df[rev(order(df$date)),] 
     
   #################################################
   # Call desired forecasting functions

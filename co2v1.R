@@ -41,11 +41,12 @@ gc()
   #################################################
   # Import & Parse
   # Point to time series data file and import it.
-  # time_import <- read.csv("ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_trend_gl.txt", 
-  # header=TRUE) 
+  #time_import <- read.csv("ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_trend_gl.txt", 
+  #header=TRUE) 
 
   # If working with a downloaded file, comment out above and uncomment below
   time_import <- read.table("~/Downloads/co2_trend_gl.txt", header=TRUE)
+
   colnames(time_import) <- c("year", "month", "day", "value", "trend")
   
   # Puts these fields as numeric
