@@ -169,25 +169,6 @@ nasdaq(ticker="TSLA",
        graph_width=1250,
        graph_height=450)
 
-source("nasdaq.R")
-nasdaq(ticker="TSLA", 
-       begin_date="2015-01-01", # For analysis, not question
-       closing_date="2020-09-22", 
-       trading_days=5, 
-       bin1=400, 
-       bin2=450, 
-       bin3=500, 
-       bin4=550,
-       probability_type="simple",
-       # If you want a graph, indicate and add info
-       graph="yes",
-       title="",
-       subtitle="",
-       info_source="NASDAQ",
-       file_name="TSLA",
-       graph_width=1250,
-       graph_height=450)
-
 # Treasury Yield for 30 Years
 source("yield.R")
 yield(closing_date="2020-09-22",
