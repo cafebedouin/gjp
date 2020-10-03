@@ -96,18 +96,18 @@ covid <- function() {
   africa <- africa[ -c(2:56) ]
   
   # Uncomment for cumulative numbers, comment out for daily
-  africa[, 2] <- cumsum(africa[, 2])
+  # africa[, 2] <- cumsum(africa[, 2])
   
-  df_add <- read.csv(paste0("~/Downloads/africa-end.csv"), 
-                     skip=0, header=TRUE)
+  # df_add <- read.csv(paste0("~/Downloads/africa-end.csv"), 
+  #                   skip=0, header=TRUE)
   
-  africa <- rbind(africa, df_add)
+  # africa <- rbind(africa, df_add)
   
   plot <- ggplot() + 
     geom_line(data = africa, aes(x = date, y = total)) +
     geom_vline(xintercept=todays_date, linetype=4, colour="black") +
     bbc_style() +
-    labs(title=paste0("Africa Cases, ", todays_date),
+    labs(title=paste0("Africa Daily Cases, ", todays_date),
          subtitle = "") +
     scale_x_date()
   
