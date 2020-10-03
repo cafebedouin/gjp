@@ -108,6 +108,6 @@ covid <- function() {
   ###############################################
   # Printing
   # Creating a cvs file of changed data
-  write.csv(ww, file=paste0("./output/covid-usa-sum-nyt-", todays_date, ".csv"))
+  write.csv(usa, file=paste0("./output/covid-usa-sum-nyt-", todays_date, ".csv"))
   
 }
