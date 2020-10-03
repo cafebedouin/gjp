@@ -11,7 +11,7 @@ https://www.rstudio.com/products/rstudio/download/
 2. Install the necessary libraries, listed in the scripts, e.g., xml2, lubridate, and dplyr.
 3. Put the supporting R script functions in the right directory so they can be found.
 4. Load the script, i.e., open file and click on the Source button, top-right.
-5. Run it in the console by calling the function: > yield.R
+5. Run it in the console by calling the function: > yield()
 
 See the results. Review the script and grok in fullness. Then, maybe move on to fred.R and update.R.
 
