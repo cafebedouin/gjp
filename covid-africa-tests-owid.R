@@ -1,7 +1,7 @@
 # covid-africa-tests-owid.R
 # (c) Scott Jenkins, <srj@posteo.org>
-# Original: April 15, 2020
-# Last revised: April 15, 2018 
+# Original: October 1, 2020
+# Last revised: October 31, 2020 
 
 #################################################
 # Description:
@@ -58,8 +58,9 @@ covid <- function() {
   df <- filter(df, continent == "Africa")
 
   # Drop all the columns but the ones of interest
-  # Keep either 5 for cases or 6 for deaths 
-  df <- df[ -c(1,2,5,6,7,8,9,10,11,12,13,14,15,16,17,19:41) ]
+  # View (df) to see column numbers
+  
+  df <- df[ -c(1,2,5:25,27:49) ]
   
   # Rename dateRep to date
   colnames(df)[1] <- "country"
