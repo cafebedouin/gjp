@@ -48,21 +48,18 @@ covid <- function() {
   # Import, organize and output csv data
 
   # Download data for testing script 
-  df <- read.csv(paste0("/home/scott/Downloads/owid-covid-data.csv"), 
-                 na.strings = "", skip=0, header=TRUE)
-  
-  View(df)
-}
+  #df <- read.csv(paste0("/home/scott/Downloads/owid-covid-data.csv"), 
+  #               na.strings = "", skip=0, header=TRUE)
 
   # Live import, switch to testing line when modifying script
-  # df <- read.csv("https://covid.ourworldindata.org/data/owid-covid-data.csv", 
-  #                 na.strings = "", fileEncoding = "UTF-8-BOM")
+  df <- read.csv("https://covid.ourworldindata.org/data/owid-covid-data.csv", 
+                   na.strings = "", fileEncoding = "UTF-8-BOM")
  
   df <- filter(df, continent == "Africa")
 
   # Drop all the columns but the ones of interest
   # Keep either 5 for cases or 6 for deaths 
-  df <- df[ -c(1,2,5,6,7,8,9,10,11,12,13,14,15,16,18:41) ]
+  df <- df[ -c(1,2,5,6,7,8,9,10,11,12,13,14,15,16,17,19:41) ]
   
   # Rename dateRep to date
   colnames(df)[1] <- "country"
@@ -134,5 +131,5 @@ covid <- function() {
   ###############################################
   # Printing
   # Creating a cvs file of changed data
-  write.csv(africa, file=paste0("./output/ecdc-africa-table-tests-", todays_date, ".csv")) 
+  write.csv(africa, file=paste0("./output/covid-africa-owid-table-tests-", todays_date, ".csv")) 
 }
