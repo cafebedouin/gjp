@@ -58,9 +58,12 @@ covid <- function() {
   df <- filter(df, continent == "Africa")
 
   # Drop all the columns but the ones of interest
-  # View (df) to see column numbers
-  
-  df <- df[ -c(1,2,5:25,27:49) ]
+  # Cumulative tests is 26, daily tests is 27
+  df <- df[ -c(1,2,5:25,27:52) ]
+
+  # View to see column numbers and troubleshoot
+  #View(df)
+  #}
   
   # Rename dateRep to date
   colnames(df)[1] <- "country"
@@ -87,8 +90,8 @@ covid <- function() {
   # Fix the names on the columns
   names(africa) <- gsub("tests.", "", names(africa))
 
-  View(africa)
-    
+  # View(africa)
+  
   africa[is.na(africa)] <- 0
 
   # Drop dates from count
@@ -100,31 +103,37 @@ covid <- function() {
   # Check if number of columns has changed
   # View(africa)
 
-  africa <- africa[ -c(2:56) ]
+  africa <- africa[ -c(2:55) ]
   
   # Uncomment for cumulative numbers, comment out for daily
-  # africa[, 2] <- cumsum(africa[, 2])
+  # If commented out, also comment out df_proj below
+  africa[, 2] <- cumsum(africa[, 2])
   
-  # df_add <- read.csv(paste0("~/Downloads/africa-end.csv"), 
-  #                   skip=0, header=TRUE)
+  # Clips off last 5 days to get rid of incomplete data 
+  africa <- head(africa,-5)
+  # todays_date_sub5 <- paste0(as.Date(todays_date)-5)
   
-  # africa <- rbind(africa, df_add)
+  # Adds last date with projection
+  df_proj <- NULL 
+  df_proj$date <- as.Date('2021-04-01')
+  df_proj$total <- as.numeric('50000000') 
+  africa <- rbind(africa, df_proj)
 
   View(africa)
     
   plot <- ggplot() + 
     geom_line(data = africa, aes(x = date, y = total)) +
-    geom_vline(xintercept=todays_date, linetype=4, colour="black") +
+    geom_vline(xintercept=todays_date-5, linetype=4, colour="black") +
     bbc_style() +
-    labs(title=paste0("Africa Daily Tests, ", todays_date),
-         subtitle = "") +
+    labs(title=paste0("Africa Cumulative Tests, ", todays_date-5),
+         subtitle = "")
     scale_x_date()
   
   plot
   
   finalise_plot(plot_name = plot,
                 source = "Source: OWID",
-                save_filepath = paste0("./output/covid-africa-owid-", todays_date, ".png"),
+                save_filepath = paste0("./output/covid-africa-cum-owid-", todays_date-5, ".png"),
                 width_pixels = 750,
                 height_pixels =500,
                 logo_image_path = paste0("./branding/logo.png"))
