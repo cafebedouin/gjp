@@ -1,7 +1,7 @@
 # covid-us-vaccines-cdc.R
 # (c) Scott Jenkins, <srj@posteo.org>
 # Original: December 31, 2020
-# Last revised: December 31, 2020 
+# Last revised: January 6, 2020 
 
 #################################################
 # Description:
@@ -12,10 +12,10 @@
 rm(list=ls())
 gc()
 
-covid <- function(url = "/home/scott/Downloads/pfizer.csv",
-                  vaccine = "pfizer",
-                  begin_date = "2020-12-14",
-                  end_date = "2021-01-11") # End column date + 1
+covid <- function(url,
+                  vaccine,
+                  begin_date,
+                  fun_date) # End column date + 1
   
   {
   
@@ -84,20 +84,24 @@ covid <- function(url = "/home/scott/Downloads/pfizer.csv",
   
   colnames(df) <- c("date", paste0(vaccine)) 
   
-  df$date <- seq.Date(as.Date(begin_date), as.Date(end_date), by = "week")
+  df$date <- seq.Date(as.Date(begin_date), as.Date(fun_date), by = "week")
 
   return(df)
 }
 
-pfizer <- covid(url = "/home/scott/Downloads/pfizer.csv",
+# Set todays_date
+todays_date <- Sys.Date()
+fun_date <- todays_date + 7
+
+pfizer <- covid(url = "https://data.cdc.gov/resource/saz5-9hgg.csv",
                 vaccine = "pfizer",
                 begin_date = "2020-12-14",
-                end_date = "2021-01-11") 
+                fun_date = paste0(fun_date)) 
 
-moderna <- covid(url = "/home/scott/Downloads/moderna.csv",
+moderna <- covid(url = "https://data.cdc.gov/resource/b7pe-5nws.csv",
                 vaccine = "moderna",
                 begin_date = "2020-12-21",
-                end_date = "2021-01-11") 
+                fun_date = paste0(fun_date)) 
 
 # Strip out commas and change to numeric
 pfizer$pfizer <- as.numeric(gsub(",","",pfizer$pfizer))
@@ -165,6 +169,3 @@ finalise_plot(plot_name = plot,
 # Printing
 # Creating a cvs file of changed data
 write.csv(df, file=paste0("./output/covid-us-vaccines-cdc-table-", todays_date, ".csv")) 
-
-
-  
