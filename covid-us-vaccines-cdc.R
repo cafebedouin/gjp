@@ -136,10 +136,10 @@ View(ship)
 ship[, 2] <- cumsum(ship[, 2])
 
 # Adds last date with projection
-#df_proj <- NULL 
-#df_proj$date <- as.Date('2021-04-01')
-#df_proj$total <- as.numeric('50000000') 
-#ship <- rbind(shipm, df_proj)
+df_proj <- NULL 
+df_proj$date <- as.Date('2021-07-01')
+df_proj$total <- as.numeric('150000000') 
+ship <- rbind(ship, df_proj)
 
 View(ship)
 
