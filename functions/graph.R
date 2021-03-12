@@ -36,18 +36,20 @@ graph <- function(df,
   library(bbplot)
   
   # Hold date to add to file output
-  run_date <- Sys.Date()
+  todays_date <- Sys.Date()
 
-  # Adding column names, changing sea name to sea ice
+  # Adding column names
   colnames(df) <- c("Date", "Value")
   
   #Make plot
   line <- ggplot(df, aes(x = Date, y = Value)) +
-    geom_point(colour = "#1380A1", size = 1) +
+    geom_line(colour = "#1380A1", size = 1) +
     geom_hline(yintercept = 0, size = 8, colour="#333333") +
+    #  geom_hline(yintercept = hline, size = 8, colour="#333333") +
     bbc_style() +
     labs(title= title,
-         subtitle = subtitle)
+         subtitle = subtitle) +
+    geom_vline(xintercept=todays_date, linetype=4, colour="black")
 
 # Lays out ts_graph by day with a colored line for each year
 # plot <- ggplot() + 
@@ -57,12 +59,9 @@ graph <- function(df,
   finalise_plot(plot_name = line,
                 source = info_source,
                 save_filepath = paste0("./output/", file_name,
-                                       "-", run_date, ".png"),
+                                       "-", todays_date, ".png"),
                 width_pixels = graph_width,
                 height_pixels = graph_height,
                 logo_image_path = "./branding/logo.png")
-
-#  ggsave(filename=paste0("./output/", file_name 
-#                         run_date, ".pdf"), plot=ts_plot)
 
 }

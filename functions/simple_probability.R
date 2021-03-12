@@ -22,10 +22,6 @@
 simple_probability <- function(df,
                                prob_results_title,
                                closing_date,
-  # freq options: daily, weekly, monthly, quarterly or yearly
-  # This is a mess and needs to be fixed, use daily.
-                               freq=daily,
-  # trading_days is only relevant for daily data
                                trading_days=7,
                                bin1,
                                bin2,
@@ -40,20 +36,10 @@ simple_probability <- function(df,
   remaining_weeks <- round(remaining_weeks, digits=0)
   remaining_time <- remaining_weeks
   
-  # Convert weeks into period of interest
-  if (freq == "daily") {
-    non_trading_days <- (7 - trading_days) * remaining_weeks
-    day_difference <- as.numeric(difftime(closing_date, todays_date))
-    remaining_time <- day_difference - non_trading_days 
-  }  
-
-  #  if (freq == "weekly") { remaining_time <- remaining_weeks }
-  if (freq == "monthly") { 
-    remaining_time <- round(sum(remaining_weeks / 4), digits = 0) }  
-  if (freq == "quarterly") { 
-    remaining_time <- round(sum(remaining_weeks / 12), digits = 0) }
-  if (freq == "yearly") { 
-    remaining_time <- round(sum(remaining_weeks / 52), digits = 0) }  
+  # Adjusts actual number of days to trading days
+  non_trading_days <- (7 - trading_days) * remaining_weeks
+  day_difference <- as.numeric(difftime(closing_date, todays_date))
+  remaining_time <- day_difference - non_trading_days
     
   #################################################
   # Check formating

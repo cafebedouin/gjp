@@ -56,13 +56,12 @@
 # Crude Oil Prices: Brent - Europe (DCOILBRENTEU)
 # University of Michigan: Consumer Sentiment (UMCSENT)
 
+
 # Replace defaults in function to desired, or 
 # call the function from console
 fred <- function(code="",
                  begin_date="", # For analysis, not question
-                 closing_date="2020-11-01",
-                 # freq options: daily, weekly, monthly, quarterly or yearly
-                 freq,
+                 closing_date="",
                  trading_days=5, 
                  bin1, 
                  bin2, 
@@ -72,16 +71,16 @@ fred <- function(code="",
                  annual_percent="no",
                  prob_results_title=paste0(code,
                                            " ",
-                                           freq,
                                            " probability table"),
                  # If you want a graph, indicate and add info
                  graph="no",
-                 title=paste0(code, freq, " Title "),
+                 title=paste0(code, " Title "),
                  subtitle="",
                  info_source="ADP",
                  file_name="ADP",
-                       graph_width=1250,
-                       graph_height=450) {
+                 graph_width=1250,
+                 graph_height=450,
+                 df_summary="yes") {
   
   #################################################
   # Preliminaries
@@ -109,7 +108,7 @@ fred <- function(code="",
   #################################################
   # Import, organize and output csv data
   
-  # Create url to access data
+  # Create live url to access data
   nurl = paste0("https://fred.stlouisfed.org/graph/fredgraph.csv?",
                 "&id=",
                 code, "&cosd=",
@@ -127,9 +126,23 @@ fred <- function(code="",
   # Live import
   df <- read.csv(nurl, skip=0, header=TRUE)
   
-  # Downloaded
-  # df <- read.csv(paste0("~/Downloads/", code, ".csv"), 
-  #                   skip=0, header=TRUE)
+  # Troubleshoot
+  ###############################################
+  # Writes csv file
+  # write.csv(df, file=paste0("./data/FRED-", 
+  #                          code,
+  #                          "-",
+  #                          todays_date,
+  #                          ".csv")) 
+  #
+  # Downloaded data rather than live, name same as FRED code
+  # df <- read.csv(paste0("./data/FRED-", 
+  #                      code, 
+  #                      "-",
+  #                      todays_date,                       
+  #                      ".csv"), 
+  #                      skip=0, header=TRUE)
+  # df <- df[ -c(1) ]
   
   # Names the columns
   colnames(df) <- c("date", "value")
@@ -140,24 +153,30 @@ fred <- function(code="",
   
   # Making sure data types are in the correct format
   df$date <- as.Date(df$date)
-  df$value <- as.vector(df$value)
+  df$value <- as.character(df$value) # for converting factors
+  df$value <- as.numeric(df$value)
   
   # Reverse dates 
   df <- df[rev(order(df$date)),] 
-    
+
+  # Visually check columns, data types and data
+  glimpse(df)
+  
+  # Writes csv file
+  write.csv(df, file=paste0("./output/FRED-", 
+                            code,
+                            "-",
+                            todays_date,
+                            ".csv")) 
+
   #################################################
   # Call desired forecasting functions
-  
-  # Change to annual percentage
-  if (annual_percent == "yes") { 
-    source("./functions/annual_percent.R")    
-    df <- annual_percent(df, freq) }
   
   # Simple walk through historical values to generate probabilities
   if (probability_type == "simple") {
     source("./functions/simple_probability.R")
     simple_probability(df, prob_results_title,
-                       closing_date, trading_days, freq,
+                       closing_date, trading_days,
                        bin1, bin2, bin3, bin4) }
   
   # Makes graphs
