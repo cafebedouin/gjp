@@ -23,6 +23,7 @@ simple_probability <- function(df,
                                prob_results_title,
                                closing_date,
                                trading_days=7,
+                               freq="monthly",
                                bin1,
                                bin2,
                                bin3,
@@ -32,14 +33,40 @@ simple_probability <- function(df,
   # Calculate time
   todays_date <- Sys.Date()
   closing_date <- as.Date(closing_date)
-  remaining_weeks <- as.numeric(difftime(closing_date, todays_date, units = "weeks"))
-  remaining_weeks <- round(remaining_weeks, digits=0)
-  remaining_time <- remaining_weeks
   
-  # Adjusts actual number of days to trading days
-  non_trading_days <- (7 - trading_days) * remaining_weeks
-  day_difference <- as.numeric(difftime(closing_date, todays_date))
-  remaining_time <- day_difference - non_trading_days
+  # For following, see:
+  # https://www.datasciencemadesimple.com/get-difference-between-two-dates-in-r-by-days-weeks-months-and-years-r-2/
+
+  # Daily
+  if (freq == "daily") {
+    remaining_time <- as.numeric(difftime(closing_date, todays_date, units = "weeks"))
+    remaining_time <- round(remaining_time, digits=0)
+    
+    # Adjusts actual number of days to trading days
+    non_trading_days <- (7 - trading_days) * remaining_time
+    day_difference <- as.numeric(difftime(closing_date, todays_date))
+    remaining_time <- day_difference - non_trading_days
+  }
+  
+  if (freq == "weekly") {
+    remaining_time <- as.numeric(difftime(closing_date, todays_date, units = "weeks")/(365.25/52))
+    remaining_time <- round(remaining_time, digits=0)
+  }
+  
+  if (freq == "monthly") {
+    remaining_time <- as.numeric(difftime(closing_date, todays_date, units = "days")/(365.25/12))
+    remaining_time <- round(remaining_time, digits=0)
+  }
+  
+  if (freq == "quarterly") {
+    remaining_time <- as.numeric(difftime(closing_date, todays_date, units = "days")/(365.25/4))
+    remaining_time <- round(remaining_time, digits=0)
+  }
+  
+  if (freq == "yearly") {
+    remaining_time <- as.numeric(difftime(closing_date, todays_date, units = "days")/365.25)
+    remaining_time <- round(remaining_time, digits=0)
+  }
     
   #################################################
   # Check formating
@@ -55,11 +82,12 @@ simple_probability <- function(df,
   df <- df[rev(order(as.Date(df$date), na.last = NA)),]
   
   # Putting into vectors format
-  df$value <- as.vector(df$value) 
-  df$date <- as.Date(df$date)
+  # df$value <- as.vector(df$value) 
+  # df$date <- as.Date(df$date)
 
   # Setting most recent value, assuming descending data
   current_value <- as.numeric(df[1,2])
+  current_value
 
   # Get the length of df$value and shorten it by remaining_time
   prob_rows = length(df$value) - remaining_time
@@ -72,6 +100,7 @@ simple_probability <- function(df,
   for (i in 1:prob_rows) {
     prob_calc[i] <- df$value[i] - df$value[i+remaining_time]
   }
+  
   
   # Adjusted against current values to match prob_calc
   adj_bin1 <- bin1 - current_value
@@ -88,7 +117,7 @@ simple_probability <- function(df,
 
   ###############################################
   # Print results
-  return(cat(paste0(prob_results_title,  " for ", closing_date, ":\n", 
+  return(cat(paste0(prob_results_title,  " for ", closing_date, " forecast:\n", 
                   prob1, ": Bin 1 - ", "<", bin1, "\n",
                   prob2, ": Bin 2 - ", bin1, " to <=", bin2, "\n", 
                   prob3, ": Bin 3 - ", bin2, "+ to <", bin3, "\n", 

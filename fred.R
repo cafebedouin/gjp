@@ -59,19 +59,20 @@
 
 # Replace defaults in function to desired, or 
 # call the function from console
-fred <- function(code="",
-                 begin_date="", # For analysis, not question
-                 closing_date="",
-                 trading_days=5, 
+fred <- function(code,
+                 begin_date, # For analysis, not question
+                 closing_date,
                  bin1, 
                  bin2, 
                  bin3, 
                  bin4,
                  probability_type="simple",
+                 freq="daily",
+                 trading_days=5, # Only matters for daily freq
                  annual_percent="no",
                  prob_results_title=paste0(code,
-                                           " ",
-                                           " probability table"),
+                                           " probability table run on ",
+                                           todays_date),
                  # If you want a graph, indicate and add info
                  graph="no",
                  title=paste0(code, " Title "),
@@ -153,7 +154,7 @@ fred <- function(code="",
   
   # Making sure data types are in the correct format
   df$date <- as.Date(df$date)
-  df$value <- as.character(df$value) # for converting factors
+  # df$value <- as.character(df$value) # for converting factors
   df$value <- as.numeric(df$value)
   
   # Reverse dates 
@@ -174,9 +175,10 @@ fred <- function(code="",
   
   # Simple walk through historical values to generate probabilities
   if (probability_type == "simple") {
-    source("./functions/simple_probability.R")
+    # source("./functions/simple_probability.R")
+    source("./functions/simple_prob_test.R")
     simple_probability(df, prob_results_title,
-                       closing_date, trading_days,
+                       closing_date, trading_days, freq,
                        bin1, bin2, bin3, bin4) }
   
   # Makes graphs
