@@ -8,7 +8,13 @@
 # 4 price points using current price and walk 
 # through the outcomes in set.
 # 
-# Exchange Rate codes:
+# Use: Best called as a function from another script
+# where defaults for multiple questions can be stored 
+# and run at will, e.g., update.R, in this repo.
+#
+# Example FRED data 
+#################################################
+# Exchange Rate codes
 # U.S. / Australia Foreign Exchange Rate (DEXUSAL)
 # Brazil / U.S. Foreign Exchange Rate (DEXBZUS)
 # Canada / U.S. Foreign Exchange Rate (DEXCAUS)
@@ -43,6 +49,7 @@
 # Silver Price, 12:00 noon, LBMA, U.S. Dollars (SLVPRUSD)
 # Silver is available in many currency denominations.
 #
+# Indices
 # NASDAQ, S&P, Dow
 # NASDAQ Composite Index (NASDAQCOM)
 # NASDAQ 100 Index (NASDAQ100)
@@ -58,18 +65,19 @@
 
 
 # Replace defaults in function to desired, or 
-# call the function from console
-fred <- function(code,
+# call the function from another script or console
+fred <- function(code, # FRED, e.g., SP500 is S&P 500 in FRED
                  begin_date, # For analysis, not question
-                 closing_date,
+                 closing_date, # for question
                  bin1, 
                  bin2, 
                  bin3, 
                  bin4,
+                 # Type of analysis, simple historical, monte carlo, etc.
                  probability_type="simple",
-                 freq="daily",
+                 freq="daily", # daily, weekly, monthly, quarterly, yearly
                  trading_days=5, # Only matters for daily freq
-                 annual_percent="no",
+                 annual_percent="no", # use function to convert 
                  prob_results_title=paste0(code,
                                            " probability table run on ",
                                            todays_date),
@@ -77,8 +85,8 @@ fred <- function(code,
                  graph="no",
                  title=paste0(code, " Title "),
                  subtitle="",
-                 info_source="ADP",
-                 file_name="ADP",
+                 info_source="",
+                 file_name="",
                  graph_width=1250,
                  graph_height=450,
                  df_summary="yes") {
@@ -96,7 +104,7 @@ fred <- function(code,
   # Set todays_date
   todays_date <- Sys.Date()
   
-  # Set date for ten years ago
+  # Set date for ten years ago, FRED often has a 10 year limit
   ten_years <- todays_date - 3652
   
   #################################################
@@ -129,7 +137,9 @@ fred <- function(code,
   
   # Troubleshoot
   ###############################################
-  # Writes csv file
+  # Writes csv file, so you can use next bit of code
+  # without constantly pulling from FRED when testing.
+  #
   # write.csv(df, file=paste0("./data/FRED-", 
   #                          code,
   #                          "-",
@@ -143,6 +153,8 @@ fred <- function(code,
   #                      todays_date,                       
   #                      ".csv"), 
   #                      skip=0, header=TRUE)
+  # 
+  # In case columns need to be changed.
   # df <- df[ -c(1) ]
   
   # Names the columns
@@ -154,7 +166,7 @@ fred <- function(code,
   
   # Making sure data types are in the correct format
   df$date <- as.Date(df$date)
-  # df$value <- as.character(df$value) # for converting factors
+  df$value <- as.character(df$value) # for converting factors
   df$value <- as.numeric(df$value)
   
   # Reverse dates 
@@ -175,8 +187,7 @@ fred <- function(code,
   
   # Simple walk through historical values to generate probabilities
   if (probability_type == "simple") {
-    # source("./functions/simple_probability.R")
-    source("./functions/simple_prob_test.R")
+    source("./functions/simple_probability.R")
     simple_probability(df, prob_results_title,
                        closing_date, trading_days, freq,
                        bin1, bin2, bin3, bin4) }

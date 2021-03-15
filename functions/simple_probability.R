@@ -6,11 +6,12 @@
 # and the second as a vector of numerical values.
 # Example: 2019-08-06,1.73
 #
-# It then takes the difference between today's price
-# and the historical values of the same duration and
+# It then takes the difference between today's values
+# and the historical values of the same duration, whether
+# daily, weekly, monthly, quarterly or yearly and
 # creates a probability table based on defined bins.
 #
-# Example of desired output:
+# Example of output:
 # Y30Y Treasury Yield Probabilities for 2020-12-31:
 # 0.001: Bin 1 - <0
 # 0.365: Bin 2 - 0 to <=2
@@ -20,10 +21,12 @@
 # Number of observations: 1877
 
 simple_probability <- function(df,
-                               prob_results_title,
-                               closing_date,
-                               trading_days=7,
-                               freq="monthly",
+                               # part before for in 1st line in example above
+                               prob_results_title, # 
+                               closing_date, # for question
+                               trading_days, # per week
+                               freq, # daily, weekly, monthly, quarterly, yearly
+                               # for five bins
                                bin1,
                                bin2,
                                bin3,
@@ -34,7 +37,7 @@ simple_probability <- function(df,
   todays_date <- Sys.Date()
   closing_date <- as.Date(closing_date)
   
-  # For following, see:
+  # Frequency: Interval for probability check, see:
   # https://www.datasciencemadesimple.com/get-difference-between-two-dates-in-r-by-days-weeks-months-and-years-r-2/
 
   # Daily
@@ -80,14 +83,9 @@ simple_probability <- function(df,
 
   # Puts into date decreasing order
   df <- df[rev(order(as.Date(df$date), na.last = NA)),]
-  
-  # Putting into vectors format
-  # df$value <- as.vector(df$value) 
-  # df$date <- as.Date(df$date)
 
-  # Setting most recent value, assuming descending data
+  # Setting most recent value, assuming decreasing order
   current_value <- as.numeric(df[1,2])
-  current_value
 
   # Get the length of df$value and shorten it by remaining_time
   prob_rows = length(df$value) - remaining_time
@@ -96,11 +94,10 @@ simple_probability <- function(df,
   prob_calc <- NULL
 
   # Iterate through value and subtract the difference 
-  # from the row remaining days away.
+  # from the row remaining time in question away.
   for (i in 1:prob_rows) {
     prob_calc[i] <- df$value[i] - df$value[i+remaining_time]
   }
-  
   
   # Adjusted against current values to match prob_calc
   adj_bin1 <- bin1 - current_value
