@@ -186,7 +186,8 @@ fred <- function(code, # FRED, e.g., SP500 is S&P 500 in FRED
   # Call desired forecasting functions
   
   # Simple walk through historical values to generate probabilities
-  if (probability_type == "simple") {
+  
+    if (probability_type == "simple") {
     source("./functions/simple_probability.R")
     simple_probability(df, prob_results_title,
                        closing_date, trading_days, freq,
