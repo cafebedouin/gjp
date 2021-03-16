@@ -7,8 +7,8 @@
 # Example: 2019-08-06,1.73
 #
 # It then takes the difference between today's values
-# and the historical values of the same duration, whether
-# daily, weekly, monthly, quarterly or yearly and
+# and the historical values of the same duration - whether
+# daily, weekly, monthly, quarterly or yearly - and
 # creates a probability table based on defined bins.
 #
 # Example of output:
@@ -24,14 +24,14 @@ simple_probability <- function(df,
                                # part before for in 1st line in example above
                                prob_results_title, # 
                                closing_date, # for question
-                               trading_days, # per week
-                               freq, # daily, weekly, monthly, quarterly, yearly
+                               trading_days=7, # per week
+                               freq="daily", # daily, weekly, monthly, quarterly, yearly
                                # for five bins
                                bin1,
                                bin2,
                                bin3,
                                bin4) {
-  
+
   #################################################
   # Calculate time
   todays_date <- Sys.Date()
@@ -40,37 +40,22 @@ simple_probability <- function(df,
   # Frequency: Interval for probability check, see:
   # https://www.datasciencemadesimple.com/get-difference-between-two-dates-in-r-by-days-weeks-months-and-years-r-2/
 
-  # Daily
-  if (freq == "daily") {
-    remaining_time <- as.numeric(difftime(closing_date, todays_date, units = "weeks"))
-    remaining_time <- round(remaining_time, digits=0)
-    
-    # Adjusts actual number of days to trading days
-    non_trading_days <- (7 - trading_days) * remaining_time
-    day_difference <- as.numeric(difftime(closing_date, todays_date))
-    remaining_time <- day_difference - non_trading_days
+  # Adjust time differential to reflect the frequency of the df
+  remaining_time <- if (freq == "weekly") {
+    round(as.numeric(difftime(closing_date, todays_date, units = "weeks")), digits = 0)
+  } else if (freq == "monthly") {
+    round(as.numeric(difftime(closing_date, todays_date, units = "days")/(365.25/12)), digits = 0)
+  } else if (freq == "quarterly") {
+    round(as.numeric(difftime(closing_date, todays_date, units = "days")/(365.25/4)), digits = 0)
+  } else if (freq == "yearly") {
+    round(as.numeric(difftime(closing_date, todays_date, units = "days")/365.25), digits = 0)
+  } else { # defaults to daily
+    # Number of days - ((No. of days in week - trading days) * weeks) 
+    as.numeric(difftime(closing_date, todays_date)) -
+    ((7 - trading_days) * 
+      round(as.numeric(difftime(closing_date, todays_date, units = "weeks")), digits = 0))
   }
   
-  if (freq == "weekly") {
-    remaining_time <- as.numeric(difftime(closing_date, todays_date, units = "weeks")/(365.25/52))
-    remaining_time <- round(remaining_time, digits=0)
-  }
-  
-  if (freq == "monthly") {
-    remaining_time <- as.numeric(difftime(closing_date, todays_date, units = "days")/(365.25/12))
-    remaining_time <- round(remaining_time, digits=0)
-  }
-  
-  if (freq == "quarterly") {
-    remaining_time <- as.numeric(difftime(closing_date, todays_date, units = "days")/(365.25/4))
-    remaining_time <- round(remaining_time, digits=0)
-  }
-  
-  if (freq == "yearly") {
-    remaining_time <- as.numeric(difftime(closing_date, todays_date, units = "days")/365.25)
-    remaining_time <- round(remaining_time, digits=0)
-  }
-    
   #################################################
   # Check formating
   
