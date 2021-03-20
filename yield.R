@@ -12,19 +12,19 @@ gc()
 
 #################################################
 # Function
-yield <- function(closing_date="2020-12-31",
-                  begin_year=2013, # > than this year, for analysis
-                  trading_days=7, 
-                  freq="daily",
-                  bin1=0.0, 
-                  bin2=2.0, 
-                  bin3=2.5, 
-                  bin4=3.0,
+yield <- function(closing_date,
+                  begin_year, # > than this year, for analysis
+                  trading_days, 
+                  freq,
+                  bin1, 
+                  bin2, 
+                  bin3, 
+                  bin4,
                   probability_type="simple",
-                  prob_results_title="Treasury Yields for 30 Year",
+                  prob_results_title="Treasury Yields for 30 Year Bond",
     # If you want a graph, indicate and add info
                   graph="yes",
-                  title="Treasury Yields for 30 Year",
+                  title="Treasury Yields for 30 Year Bond",
                   subtitle="",
                   info_source="U.S. Treasury",
                   file_name="treasury",
@@ -101,11 +101,12 @@ yield <- function(closing_date="2020-12-31",
   if (probability_type == "simple")
     source("./functions/simple_probability.R")
     simple_probability(df, prob_results_title,
-                       closing_date, freq, trading_days, 
+                       closing_date, trading_days, freq, 
                        bin1, bin2, bin3, bin4)
   
-  if (graph == "yes")
+  if (graph == "yes") {
     source("./functions/graph.R")
     graph(df, title, subtitle, info_source, file_name, 
           graph_width, graph_height)
+   }
 }

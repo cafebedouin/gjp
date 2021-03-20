@@ -47,6 +47,8 @@ simple_probability <- function(df,
     round(as.numeric(difftime(closing_date, todays_date, units = "days")/(365.25/12)), digits = 0)
   } else if (freq == "quarterly") {
     round(as.numeric(difftime(closing_date, todays_date, units = "days")/(365.25/4)), digits = 0)
+  } else if (freq == "biyearly") {
+    round(as.numeric(difftime(closing_date, todays_date, units = "days")/365.25/2), digits = 0)
   } else if (freq == "yearly") {
     round(as.numeric(difftime(closing_date, todays_date, units = "days")/365.25), digits = 0)
   } else { # defaults to daily
@@ -97,13 +99,26 @@ simple_probability <- function(df,
   prob4 <- round(sum(prob_calc>=adj_bin3 & prob_calc<=adj_bin4)/length(prob_calc), digits = 3)
   prob5 <- round(sum(prob_calc>adj_bin4)/length(prob_calc), digits = 3)
 
+  # Calculate Briers
+  brier1 <- round(mean((1 - prob1)^2 + (0 - prob2)^2 + (0 - prob3)^2 + (0 - prob4)^2 + (0 - prob5)^2), digits = 3)
+  brier2 <- round(mean((0 - prob1)^2 + (1 - prob2)^2 + (0 - prob3)^2 + (0 - prob4)^2 + (0 - prob5)^2), digits = 3)
+  brier3 <- round(mean((0 - prob1)^2 + (0 - prob2)^2 + (1 - prob3)^2 + (0 - prob4)^2 + (0 - prob5)^2), digits = 3)
+  brier4 <- round(mean((0 - prob1)^2 + (0 - prob2)^2 + (0 - prob3)^2 + (1 - prob4)^2 + (0 - prob5)^2), digits = 3)
+  brier5 <- round(mean((0 - prob1)^2 + (0 - prob2)^2 + (0 - prob3)^2 + (0 - prob4)^2 + (1 - prob5)^2), digits = 3)
+  
   ###############################################
   # Print results
-  return(cat(paste0(prob_results_title,  " for ", closing_date, " forecast:\n", 
-                  prob1, ": Bin 1 - ", "<", bin1, "\n",
-                  prob2, ": Bin 2 - ", bin1, " to <=", bin2, "\n", 
-                  prob3, ": Bin 3 - ", bin2, "+ to <", bin3, "\n", 
-                  prob4, ": Bin 4 - ", bin3, " to <=", bin4, "\n", 
-                  prob5, ": Bin 5 - ", bin4, "+", "\n",
-                  "Number of observations: ", prob_rows, "\n")))
+  return(cat(paste0(prob_results_title,  " for ", closing_date, " forecast:\n",
+                    "====================================================\n",
+                    "Prob. | Brier | Bins \n", 
+                    "====================================================\n",
+                    prob1, " | ", brier1, " | Bin 1 - ", "<", bin1, "\n",
+                    prob2, " | ", brier2, " | Bin 2 - ", bin1, " to <=", bin2, "\n", 
+                    prob3, " | ", brier3, " | Bin 3 - ", bin2, "+ to <", bin3, "\n", 
+                    prob4, " | ", brier4, " | Bin 4 - ", bin3, " to <=", bin4, "\n", 
+                    prob5, " | ", brier5, " | Bin 5 - ", bin4, "+", "\n",
+                    "====================================================\n",
+                    "Number of observations: ", prob_rows, "\n",
+                    "Note: Brier scores assume 5 bins and \n",
+                  "      the line it is on is correct.")))
 }
