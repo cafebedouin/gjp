@@ -8,27 +8,28 @@
 #
 # It then makes a vector of the difference between 
 # a specific point in time and the period before to create 
-# a list of daily change in values. Then, it takes the number
+# a list of change in values. Then, it takes the number
 # of periods left in the question and randomly picks
-# values for the number of periods left in the question,
-# and sums the values to determine possible changes
+# values, and sums the values to determine possible changes
 # that could occur over that period based on historical
 # values. It then creates probabilities from the
-# number of simulations run.
+# number of random simulations run from deck.
 #
 # Example of output:
 #
-# Treasury Yields for 30 Year for 2021-09-16 forecast:
+# Treasury Yields for 10 Year for 2021-09-16 forecast:
 # ====================================================
 # Prob. | Brier | Bins 
 # ====================================================
-# 0.205 | 0.810 | Bin 1 - <1
-# 0.278 | 0.664 | Bin 2 - 1 to <=1.5
-# 0.210 | 0.800 | Bin 3 - 1.5+ to <2
-# 0.222 | 0.776 | Bin 4 - 2 to <=2.5
-# 0.084 | 1.052 | Bin 5 - 2.5+
+# 0.202 | 0.818 | Bin 1 - <1
+# 0.255 | 0.712 | Bin 2 - 1 to <=1.5
+# 0.286 | 0.650 | Bin 3 - 1.5+ to <2
+# 0.150 | 0.922 | Bin 4 - 2 to <=2.5
+# 0.107 | 1.008 | Bin 5 - 2.5+
 # ====================================================
 # Number of Monte Carlo simulations: 10000
+# Note: Brier scores assume 5 bins and 
+# the line it is on is correct.
 
 monte <- function(df,
                   # part before for in 1st line in example above
@@ -105,8 +106,6 @@ monte <- function(df,
   for(i in 1:hands){
     prob_calc[i] <- current_value + sum(sample(deck, remaining_time, replace = FALSE))
   }
-  
-  View(prob_calc)
   
   # Display summary stats
   summary(prob_calc)
