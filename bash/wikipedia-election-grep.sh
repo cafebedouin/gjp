@@ -1,0 +1,1 @@
+curl --silent "https://commons.wikimedia.org/wiki/File:Opinion_polling_for_the_2021_Scottish_Parliament_election_(constituency_vote).svg" | grep -Pzo "\"values\": \[[^]]*\]" | grep -Pzo "\[[^]]*\]" > scottish-election.json
