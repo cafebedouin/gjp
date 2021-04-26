@@ -13,6 +13,7 @@
 
 standist <- function(filename, # Org and Question No.
                      forecast_periods,   # How far ahead is the forecast based on data periods?
+                     outlier,
                      bins) {
   
   # Prevent scientific notation
@@ -21,22 +22,29 @@ standist <- function(filename, # Org and Question No.
   # Load data
   df <- read.csv(paste0("./data/", filename, ".csv"), skip=0, header=TRUE)
 
+  # Drop outliers
+  if (!is.null(outlier)) {
+    df <- df[-c(outlier), ]
+  }
+  
   # Create a data frame
   period_inc <- NULL
   
   # Creates a dataframe of change in value that matches forecast period
   for (i in 1:(length(df$quant) - forecast_periods)) {
-    period_inc[i] <- df$quant[i+forecast_periods] - df$quant[i]
+    period_inc[i] <- df$quant[i+forecast_periods] / df$quant[i]
   }
+  
+  View(period_inc)
   
   # Mean increase for similar periods over data available
   mean_inc <- mean(period_inc)
   
-  # Get the standard deviation of the data
-  df_sd <- sd(df$quant)
+  # Get the standard deviation of the data and increase it in proportion
+  df_sd <- sd(df$quant) * mean_inc
   
   # Creates a projected mean for the period being forecasted
-  df_adj_mean <- df$quant[length(df$quant)] + mean_inc
+  df_adj_mean <- df$quant[length(df$quant)] * mean_inc
   
   # Create a new data frame for probabilities
   probability <- NULL
