@@ -95,20 +95,29 @@ monte <- function(df,
   # Iterate through each value and subtract the difference 
   # from the next row, or period to create deck.
   for (i in 1:deck_size) {
-    deck[i] <- df$value[i] - df$value[i+1]
+    if (df$value[i+1] == 0) {
+      deck[i] <- 1
+    } else {
+      deck[i] <- df$value[i] / df$value[i+1]
+    }
+    # Original
+    # deck[i] <- df$value[i] - df$value[i+1]
   }
+  
+  View(deck)
   
   prob_calc <- NULL
   
   # Draw from deck the remaining periods of question,
-  # add them together, add them to current value and
-  # save the result to generate a probability table.
-  for(i in 1:hands){
-    prob_calc[i] <- current_value + sum(sample(deck, remaining_time, replace = FALSE))
+  # add the percentages together, subtract remaining time
+  # minus 1 to index to 1, multiple result by current value 
+  # and save the result to generate a probability table.
+  for(i in 1:hands) {
+    prob_calc[i] <- current_value * (sum(sample(deck, remaining_time, replace = TRUE))-(remaining_time-1))
   }
-  
-  # Display summary stats
-  summary(prob_calc)
+  View(current_value)
+  View(remaining_time)
+  View(prob_calc)
 
   # Empirically, how many trading days fall in each question bin?
   prob1 <- round(sum(prob_calc<bin1)/length(prob_calc), digits = 3)
@@ -116,27 +125,18 @@ monte <- function(df,
   prob3 <- round(sum(prob_calc>bin2 & prob_calc<bin3)/length(prob_calc), digits = 3)
   prob4 <- round(sum(prob_calc>=bin3 & prob_calc<=bin4)/length(prob_calc), digits = 3)
   prob5 <- round(sum(prob_calc>bin4)/length(prob_calc), digits = 3)
-
-  # Calculate Briers
-  brier1 <- round(mean((1 - prob1)^2 + (0 - prob2)^2 + (0 - prob3)^2 + (0 - prob4)^2 + (0 - prob5)^2), digits = 3)
-  brier2 <- round(mean((0 - prob1)^2 + (1 - prob2)^2 + (0 - prob3)^2 + (0 - prob4)^2 + (0 - prob5)^2), digits = 3)
-  brier3 <- round(mean((0 - prob1)^2 + (0 - prob2)^2 + (1 - prob3)^2 + (0 - prob4)^2 + (0 - prob5)^2), digits = 3)
-  brier4 <- round(mean((0 - prob1)^2 + (0 - prob2)^2 + (0 - prob3)^2 + (1 - prob4)^2 + (0 - prob5)^2), digits = 3)
-  brier5 <- round(mean((0 - prob1)^2 + (0 - prob2)^2 + (0 - prob3)^2 + (0 - prob4)^2 + (1 - prob5)^2), digits = 3)
   
   ###############################################
   # Print results
   return(cat(paste0(prob_results_title,  " for ", closing_date, " forecast:\n",
                     "====================================================\n",
-                    "Prob. | Brier | Bins \n", 
+                    "Prob. | Bins \n", 
                     "====================================================\n",
-                    prob1, " | ", brier1, " | Bin 1 - ", "<", bin1, "\n",
-                    prob2, " | ", brier2, " | Bin 2 - ", bin1, " to <=", bin2, "\n", 
-                    prob3, " | ", brier3, " | Bin 3 - ", bin2, "+ to <", bin3, "\n", 
-                    prob4, " | ", brier4, " | Bin 4 - ", bin3, " to <=", bin4, "\n", 
-                    prob5, " | ", brier5, " | Bin 5 - ", bin4, "+", "\n",
+                    prob1, " | Bin 1 - ", "<", bin1, "\n",
+                    prob2, " | Bin 2 - ", bin1, " to <=", bin2, "\n", 
+                    prob3, " | Bin 3 - ", bin2, "+ to <", bin3, "\n", 
+                    prob4, " | Bin 4 - ", bin3, " to <=", bin4, "\n", 
+                    prob5, " | Bin 5 - ", bin4, "+", "\n",
                     "====================================================\n",
-                    "Number of Monte Carlo simulations: ", hands, "\n",
-                    "Note: Brier scores assume 5 bins and \n",
-                  "      the line it is on is correct.\n")))
+                    "Number of Monte Carlo simulations: ", hands, "\n")))
 }
