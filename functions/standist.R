@@ -1,11 +1,12 @@
 # standist.R 
 #################################################
 # Description: Takes a two column data frame
-# with columns date, quant and generates a projected
-# mean increase for the forecast period, adds that 
-# increase to last value for the series, uses that
-# projected mean with standard deviation to generate
-# a probability table, assuming a standard distribution.
+# with columns date (chronological), quant and 
+# generates a projected mean increase for the 
+# forecast period, adds that increase to last 
+# value for the series, uses that projected mean 
+# with standard deviation to generate a probability 
+# table, assuming a standard distribution.
 # 
 # Use: Copy paste from question into spreadsheet.
 # Save file into data folder. Refer to filename,
@@ -22,6 +23,8 @@ standist <- function(filename, # Org and Question No.
   # Load data
   df <- read.csv(paste0("./data/", filename, ".csv"), skip=0, header=TRUE)
 
+  View(df)
+  
   # Drop outliers
   if (!is.null(outlier)) {
     df <- df[-c(outlier), ]
@@ -34,8 +37,6 @@ standist <- function(filename, # Org and Question No.
   for (i in 1:(length(df$quant) - forecast_periods)) {
     period_inc[i] <- df$quant[i+forecast_periods] / df$quant[i]
   }
-  
-  View(period_inc)
   
   # Mean increase for similar periods over data available
   mean_inc <- mean(period_inc)
@@ -58,10 +59,10 @@ standist <- function(filename, # Org and Question No.
   for (i in 2:length(bins)) {
     probability[i] <- pnorm(bins[i], df_adj_mean, df_sd) - pnorm(bins[i-1], df_adj_mean, df_sd) 
   }
-
+  
   # Tell me what the assumed mean was, standard deviation and probabilities
-  return(cat(paste0("Projected mean: ", round(df_adj_mean, digits = 0), "\n",
-                "Standard deviation: ", round(df_sd, digits = 0), "\n\n",
+  return(cat(paste0("Projected mean: ", df_adj_mean, "\n",
+                "Standard deviation: ", df_sd, "\n\n",
                 "Base rate probability: \n", 
                 "Bin 1: ", round(probability[1], digits = 3), "\n",
                 "Bin 2: ", round(probability[2], digits = 3), "\n",
