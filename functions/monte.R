@@ -104,8 +104,6 @@ monte <- function(df,
     # deck[i] <- df$value[i] - df$value[i+1]
   }
   
-  View(deck)
-  
   prob_calc <- NULL
   
   # Draw from deck the remaining periods of question,
@@ -115,10 +113,9 @@ monte <- function(df,
   for(i in 1:hands) {
     prob_calc[i] <- current_value * (sum(sample(deck, remaining_time, replace = TRUE))-(remaining_time-1))
   }
-  View(current_value)
-  View(remaining_time)
-  View(prob_calc)
 
+  View(prob_calc)
+  
   # Empirically, how many trading days fall in each question bin?
   prob1 <- round(sum(prob_calc<bin1)/length(prob_calc), digits = 3)
   prob2 <- round(sum(prob_calc>=bin1 & prob_calc<=bin2)/length(prob_calc), digits = 3)
