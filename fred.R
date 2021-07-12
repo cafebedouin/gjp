@@ -74,7 +74,7 @@ fred <- function(code, # FRED, e.g., SP500 is S&P 500 in FRED
                  bin3, 
                  bin4,
                  # Type of analysis, simple historical, monte carlo, etc.
-                 probability_type="simple",
+                 probability_type,
                  freq="daily", # daily, weekly, monthly, quarterly, yearly
                  trading_days=5, # Only matters for daily freq
                  annual_percent="no", # use function to convert 
@@ -95,7 +95,7 @@ fred <- function(code, # FRED, e.g., SP500 is S&P 500 in FRED
   # Preliminaries
   
   # Define basepath and set working directory:
-  basepath = "~/Documents/R/forecasting"
+  basepath = "~/Documents/programming/R/forecasting"
   setwd(basepath)
   
   # Preventing scientific notation in graphs
@@ -113,6 +113,12 @@ fred <- function(code, # FRED, e.g., SP500 is S&P 500 in FRED
   # install.packages('X')
   library(data.table)
   library(dplyr)
+  
+  #################################################
+  # Functions
+  source("./functions/simple_probability.R")
+  source("./functions/monte.R")
+  source("./functions/graph.R")
   
   #################################################
   # Import, organize and output csv data
@@ -187,15 +193,31 @@ fred <- function(code, # FRED, e.g., SP500 is S&P 500 in FRED
   
   # Simple walk through historical values to generate probabilities
   
-    if (probability_type == "simple") {
+  if (probability_type == "simple") {
     source("./functions/simple_probability.R")
     simple_probability(df, prob_results_title,
                        closing_date, trading_days, freq,
                        bin1, bin2, bin3, bin4) }
   
+  # Simple walk through historical percentages to generate probabilities
+  if (probability_type == "simple_percent") {
+    source("./functions/simple_probability_percent.R")
+    simple_probability(df, prob_results_title,
+                       closing_date, trading_days, freq,
+                       bin1, bin2, bin3, bin4) }
+  
+  
+  # Simple Monte Carlo using historical period changes 
+  # and number of hands to generate probabilities
+  if (probability_type == "monte") {
+    source("./functions/monte.R")
+    monte(df, prob_results_title,
+          closing_date, trading_days, 
+          freq, hands=10000,
+          bin1, bin2, bin3, bin4) }
+  
   # Makes graphs
   if (graph == "yes") {
-    source("./functions/graph.R")  
     graph(df, title, subtitle, info_source, file_name, 
           graph_width, graph_height)
   }
