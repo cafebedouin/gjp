@@ -6,30 +6,28 @@
 # and the second as a vector of numerical values.
 # Example: 2019-08-06,1.73
 #
-# It then makes a vector of the difference between 
-# a specific point in time and the period before to create 
-# a list of change in values. Then, it takes the number
-# of periods left in the question and randomly picks
-# values, and sums the values to determine possible changes
-# that could occur over that period based on historical
-# values. It then creates probabilities from the
-# number of random simulations run from deck.
+# It then takes the remaining time, makes a vector of the quotient 
+# between current price divided by the price that was equal to the 
+# remaining time left before the question for all the data available.
+# It then calculates a mean and standard deviation to create a 
+# standard distribution, which is then used to randomly choose values
+# for the Monte Carlo simulation. These randomly chosen values
+# are then multiplied by the current price by the number of simulations
+# required in the script.
 #
 # Example of output:
 #
 # Treasury Yields for 10 Year for 2021-09-16 forecast:
 # ====================================================
-# Prob. | Brier | Bins 
+# Prob. | Bins 
 # ====================================================
-# 0.202 | 0.818 | Bin 1 - <1
-# 0.255 | 0.712 | Bin 2 - 1 to <=1.5
-# 0.286 | 0.650 | Bin 3 - 1.5+ to <2
-# 0.150 | 0.922 | Bin 4 - 2 to <=2.5
-# 0.107 | 1.008 | Bin 5 - 2.5+
+# 0.202 | Bin 1 - <1
+# 0.255 | Bin 2 - 1 to <=1.5
+# 0.286 | Bin 3 - 1.5+ to <2
+# 0.150 | Bin 4 - 2 to <=2.5
+# 0.107 | Bin 5 - 2.5+
 # ====================================================
 # Number of Monte Carlo simulations: 10000
-# Note: Brier scores assume 5 bins and 
-# the line it is on is correct.
 
 monte <- function(df,
                   # part before for in 1st line in example above
@@ -87,7 +85,7 @@ monte <- function(df,
   current_value <- as.numeric(df[1,2])
 
   # Get the length of df$value and shorten it by remaining_time
-  deck_size <- length(df$value) - 1
+  deck_size <- length(df$value) - remaining_time
 
   # Create a dataframe
   deck <- NULL
@@ -95,26 +93,26 @@ monte <- function(df,
   # Iterate through each value and subtract the difference 
   # from the next row, or period to create deck.
   for (i in 1:deck_size) {
-    if (df$value[i+1] == 0) {
+    # Avoiding dividing by zero and negatives
+    if (df$value[i+remaining_time] <= 0) {
       deck[i] <- 1
     } else {
-      deck[i] <- df$value[i] / df$value[i+1]
+      deck[i] <- df$value[i] / df$value[i+remaining_time]
     }
-    # Original
-    # deck[i] <- df$value[i] - df$value[i+1]
   }
+
+  # Calculate standard deviation and mean of deck
+  deck_stdev <- sd(deck)
+  deck_mean <- mean(deck)
   
+  # Create data frame
   prob_calc <- NULL
   
   # Draw from deck the remaining periods of question,
   # add the percentages together, subtract remaining time
   # minus 1 to index to 1, multiple result by current value 
   # and save the result to generate a probability table.
-  for(i in 1:hands) {
-    prob_calc[i] <- current_value * (sum(sample(deck, remaining_time, replace = TRUE))-(remaining_time-1))
-  }
-
-  View(prob_calc)
+  prob_calc <- current_value * rnorm(hands, mean = deck_mean, sd = deck_stdev)
   
   # Empirically, how many trading days fall in each question bin?
   prob1 <- round(sum(prob_calc<bin1)/length(prob_calc), digits = 3)
