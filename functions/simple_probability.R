@@ -32,10 +32,7 @@ simple_probability <- function(df,
                                trading_days=7, # per week
                                freq="daily", # daily, weekly, monthly, quarterly, biyearly, yearly
                                # for five bins
-                               bin1,
-                               bin2,
-                               bin3,
-                               bin4) {
+                               bins) {
 
   #################################################
   # Calculate time
@@ -93,24 +90,23 @@ simple_probability <- function(df,
   
   View(prob_calc)
 
-  # Empirically, how many trading days fall in each question bin?
-  prob1 <- round(sum(prob_calc<bin1)/length(prob_calc), digits = 3)
-  prob2 <- round(sum(prob_calc>=bin1 & prob_calc<=bin2)/length(prob_calc), digits = 3)
-  prob3 <- round(sum(prob_calc>bin2 & prob_calc<bin3)/length(prob_calc), digits = 3)
-  prob4 <- round(sum(prob_calc>=bin3 & prob_calc<=bin4)/length(prob_calc), digits = 3)
-  prob5 <- round(sum(prob_calc>bin4)/length(prob_calc), digits = 3)
+  bins <- as.data.frame(bins)
   
-  ###############################################
-  # Print results
-  return(cat(paste0(prob_results_title,  " for ", closing_date, " forecast:\n",
-                    "====================================================\n",
-                    "Prob. | Bins \n", 
-                    "====================================================\n",
-                    prob1, " | Bin 1 - ", "<", bin1, "\n",
-                    prob2, " | Bin 2 - ", bin1, " to <=", bin2, "\n", 
-                    prob3, " | Bin 3 - ", bin2, "+ to <", bin3, "\n", 
-                    prob4, " | Bin 4 - ", bin3, " to <=", bin4, "\n", 
-                    prob5, " | Bin 5 - ", bin4, "+", "\n",
-                    "====================================================\n",
-                    "Number of historical observations: ", prob_rows, "\n")))
+  # Sort bins into lowest to highest order
+  # bins <- bins[order(as.numeric(bins)),] 
+  
+  # Sort probabilities into bins
+  for (i in 1:length(bins$bins)) {
+    if (i == 1) {
+      # Checks to see probabilities below lowest value
+      bins$probs[i] <- round(sum(prob_calc<bins$bins[i])/length(prob_calc), digits = 3)
+    } else if ((i %% 2) == 0) {
+      bins$probs[i] <- round(sum(prob_calc>=bins$bins[i-1] & prob_calc<=bins$bins[i])/length(prob_calc), digits = 3)
+    } else if ((i %% 2) != 0) {
+      bins$probs[i] <- round(sum(prob_calc>bins$bins[i-1] & prob_calc<bins$bins[i])/length(prob_calc), digits = 3)
+    }
+  }
+  
+  print(bins)
+  return(bins)
 }

@@ -69,10 +69,7 @@
 fred <- function(code, # FRED, e.g., SP500 is S&P 500 in FRED
                  begin_date, # For analysis, not question
                  closing_date, # for question
-                 bin1, 
-                 bin2, 
-                 bin3, 
-                 bin4,
+                 bins,
                  # Type of analysis, simple historical, monte carlo, etc.
                  probability_type,
                  freq="daily", # daily, weekly, monthly, quarterly, yearly
@@ -113,12 +110,6 @@ fred <- function(code, # FRED, e.g., SP500 is S&P 500 in FRED
   # install.packages('X')
   library(data.table)
   library(dplyr)
-  
-  #################################################
-  # Functions
-  source("./functions/simple_probability.R")
-  source("./functions/monte.R")
-  source("./functions/graph.R")
   
   #################################################
   # Import, organize and output csv data
@@ -196,8 +187,7 @@ fred <- function(code, # FRED, e.g., SP500 is S&P 500 in FRED
   if (probability_type == "simple") {
     source("./functions/simple_probability.R")
     simple_probability(df, prob_results_title,
-                       closing_date, trading_days, freq,
-                       bin1, bin2, bin3, bin4) }
+                       closing_date, trading_days, freq, bins) }
   
   # Simple walk through historical percentages to generate probabilities
   if (probability_type == "simple_percent") {
@@ -206,15 +196,13 @@ fred <- function(code, # FRED, e.g., SP500 is S&P 500 in FRED
                        closing_date, trading_days, freq,
                        bin1, bin2, bin3, bin4) }
   
-  
   # Simple Monte Carlo using historical period changes 
   # and number of hands to generate probabilities
   if (probability_type == "monte") {
     source("./functions/monte.R")
     monte(df, prob_results_title,
           closing_date, trading_days, 
-          freq, hands=10000,
-          bin1, bin2, bin3, bin4) }
+          freq, hands=100000, bins) }
   
   # Makes graphs
   if (graph == "yes") {

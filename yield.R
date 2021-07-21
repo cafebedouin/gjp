@@ -16,14 +16,10 @@ yield <- function(closing_date,
                   begin_year, # > than this year, for analysis
                   trading_days, 
                   freq,
-                  bin1, 
-                  bin2, 
-                  bin3, 
-                  bin4,
-                  probability_type="simple",
-                  prob_results_title="Treasury Yields for 30 Year Bond",
-    # If you want a graph, indicate and add info
-                  graph="yes",
+                  bins,
+                  probability_type,
+                  # If you want a graph, indicate and add info
+                  graph="no",
                   title="Treasury Yields for 30 Year Bond",
                   subtitle="",
                   info_source="U.S. Treasury",
@@ -33,7 +29,10 @@ yield <- function(closing_date,
     # Script does analysis for only one Treasury Yield at a time.                    
     # Yield Codes:  Y1M = 1 Month Yield, Y2M = 2 Month Yield Y3M, Y6M, 
     # Y1Y = 1 Year Yield, Y2Y, Y3Y, Y5Y, Y7Y, Y10Y, Y20Y, Y30Y                       
-                  treasury_code="Y30Y") {
+                  treasury_code="Y30Y",
+                  prob_results_title=paste0(treasury_code,
+                                            " probability table run on ",
+                                            todays_date)) {
 
   #################################################
   # Libraries
@@ -51,10 +50,10 @@ yield <- function(closing_date,
   # Last 4 digits are year, retrieves years > than start_date
   yurl = paste0("http://data.treasury.gov/feed.svc/DailyTreasuryYieldCurveRateData?",
                 "$filter=year(NEW_DATE)%20gt%20",
-                begin_year)  
+                begin_year) 
 
   # Script testing with downloaded file
-  # xmlobj <- read_xml("~/Downloads/DailyTreasuryYieldCurveRateData.xml")
+  # xmlobj <- read_xml("~/Downloads/DailyTreasuryYieldCurveRateData")
 
   # Live script
   xmlobj <- read_xml(yurl)
@@ -82,30 +81,37 @@ yield <- function(closing_date,
   # Changing column name to reuse time-series script
   colnames(df) <- c("date", "value")
   
-  # time_import$date <- as.numeric(gsub("[T,]", "", nasdaq$value))
-  #  as.Date(time_import$date, "%Y-%m-%dT%h:%m:%s")
-
-  # Clips off time and imports value as number
+  # Changes date to date and imports value as number
   df$date <- as.Date(df$date)
   df$value <- as.numeric(df$value) 
   
   # Puts into date decreasing order
   df <- df[rev(order(as.Date(df$date), na.last = NA)),]
+
+  View(df) # testing
   
   # Putting into vectors format
   df$value <- as.vector(df$value) 
   
+  
   #################################################
   # Call desired forecasting functions
   
-  if (probability_type == "simple")
+  if (probability_type == "simple") {
     source("./functions/simple_probability.R")
     simple_probability(df, prob_results_title,
-                       closing_date, trading_days, freq, 
-                       bin1, bin2, bin3, bin4)
+                       closing_date, trading_days, freq, bins) }
+    
+  # Simple Monte Carlo using historical period changes 
+  # and number of hands to generate probabilities
+  if (probability_type == "monte") {
+    source("./functions/monte.R")
+    monte(df, prob_results_title,
+          closing_date, trading_days, 
+          freq, hands=10000, bins) }
   
   if (graph == "yes") {
-    source("./functions/graph.R")
+    source("./functions/graph.R")    
     graph(df, title, subtitle, info_source, file_name, 
           graph_width, graph_height)
    }
