@@ -40,56 +40,22 @@ monte <- function(df,
                   hands=10000,
                   bins) {
   
-  #################################################
-  # Calculate time
-  
   # Set todays_date
   todays_date <- Sys.Date()
-  last_data_date <- as.Date(df[1,1])
-  View(last_data_date)
-  closing_date <- as.Date(closing_date)
   
-  # Frequency: Interval for probability check, see:
-  # https://www.datasciencemadesimple.com/get-difference-between-two-dates-in-r-by-days-weeks-months-and-years-r-2/
+  # Run the remaining_time function
+  source("./functions/remaining_time.R")
+  remaining_time <- remaining_time(df,
+                                   closing_date,
+                                   trading_days,
+                                   freq)
   
-  # Adjust time differential to reflect the frequency of the df
-  remaining_time <- if (freq == "weekly") {
-    round(as.numeric(difftime(closing_date, last_data_date, units = "weeks")), digits = 0)
-  } else if (freq == "monthly") {
-    round(as.numeric(difftime(closing_date, last_data_date, units = "days")/(365.25/12)), digits = 0)
-  } else if (freq == "quarterly") {
-    round(as.numeric(difftime(closing_date, last_data_date, units = "days")/(365.25/4)), digits = 0)
-  } else if (freq == "biyearly") {
-    round(as.numeric(difftime(closing_date, last_data_date, units = "days")/365.25/2), digits = 0)
-  } else if (freq == "yearly") {
-    round(as.numeric(difftime(closing_date, last_data_date, units = "days")/365.25), digits = 0)
-  } else { # defaults to daily
-    # Number of days - ((No. of days in week - trading days) * weeks) 
-    as.numeric(difftime(closing_date, last_data_date)) -
-      ((7 - trading_days) * 
-         round(as.numeric(difftime(closing_date, last_data_date, units = "weeks")), digits = 0))
-  }
-  
-  #################################################
-  # Check formating
-  
-  # Changing column name to required values
-  colnames(df) <- c("date", "value")
-  
-  # Clips off time and imports value as number
-  df$date <- as.Date(df$date)
-  df$value <- as.numeric(df$value) 
-  
-  # Puts into date decreasing order
-  df <- df[rev(order(as.Date(df$date), na.last = NA)),]
-  
-  # Removes NAs if they appear in values column
-  df[!is.na(df[, 2]), ]
+  # Format for probability functions
+  source("./functions/probform.R")
+  df <- probform(df)
   
   # Setting most recent value, assuming decreasing order
   current_value <- as.numeric(df[1,2])
-  
-  View(df) # for testing
   
   # Get the length of df$value and shorten it by remaining_time
   deck_size <- length(df$value) - remaining_time
@@ -123,25 +89,13 @@ monte <- function(df,
   # the number of hands and multiples it by current value
   prob_calc <- current_value * exp(rnorm(hands, mean = mu, sd = sig))
   
-  View(prob_calc) # for testing
-  
-  bins <- as.data.frame(bins)
-  
-  # Sort bins into lowest to highest order
-  # bins <- bins[order(as.numeric(bins)),] 
+  # View(prob_calc) # for testing
   
   # Sort probabilities into bins
-  for (i in 1:length(bins$bins)) {
-    if (i == 1) {
-      # Checks to see probabilities below lowest value
-      bins$probs[i] <- round(sum(prob_calc<bins$bins[i])/length(prob_calc), digits = 3)
-    } else if ((i %% 2) == 0) {
-      bins$probs[i] <- round(sum(prob_calc>=bins$bins[i-1] & prob_calc<=bins$bins[i])/length(prob_calc), digits = 3)
-    } else if ((i %% 2) != 0) {
-      bins$probs[i] <- round(sum(prob_calc>bins$bins[i-1] & prob_calc<bins$bins[i])/length(prob_calc), digits = 3)
-    }
-  }
+  source("./functions/sortbins.R")
+  bins <- sortbins(bins,
+                 prob_calc)
   
-  print(bins)
+  # print(bins)
   return(bins)
 }
