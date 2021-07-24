@@ -42,7 +42,11 @@ monte <- function(df,
   
   #################################################
   # Calculate time
+  
+  # Set todays_date
   todays_date <- Sys.Date()
+  last_data_date <- as.Date(df[1,1])
+  View(last_data_date)
   closing_date <- as.Date(closing_date)
   
   # Frequency: Interval for probability check, see:
@@ -50,20 +54,20 @@ monte <- function(df,
   
   # Adjust time differential to reflect the frequency of the df
   remaining_time <- if (freq == "weekly") {
-    round(as.numeric(difftime(closing_date, todays_date, units = "weeks")), digits = 0)
+    round(as.numeric(difftime(closing_date, last_data_date, units = "weeks")), digits = 0)
   } else if (freq == "monthly") {
-    round(as.numeric(difftime(closing_date, todays_date, units = "days")/(365.25/12)), digits = 0)
+    round(as.numeric(difftime(closing_date, last_data_date, units = "days")/(365.25/12)), digits = 0)
   } else if (freq == "quarterly") {
-    round(as.numeric(difftime(closing_date, todays_date, units = "days")/(365.25/4)), digits = 0)
+    round(as.numeric(difftime(closing_date, last_data_date, units = "days")/(365.25/4)), digits = 0)
   } else if (freq == "biyearly") {
-    round(as.numeric(difftime(closing_date, todays_date, units = "days")/365.25/2), digits = 0)
+    round(as.numeric(difftime(closing_date, last_data_date, units = "days")/365.25/2), digits = 0)
   } else if (freq == "yearly") {
-    round(as.numeric(difftime(closing_date, todays_date, units = "days")/365.25), digits = 0)
+    round(as.numeric(difftime(closing_date, last_data_date, units = "days")/365.25), digits = 0)
   } else { # defaults to daily
     # Number of days - ((No. of days in week - trading days) * weeks) 
-    as.numeric(difftime(closing_date, todays_date)) -
+    as.numeric(difftime(closing_date, last_data_date)) -
       ((7 - trading_days) * 
-         round(as.numeric(difftime(closing_date, todays_date, units = "weeks")), digits = 0))
+         round(as.numeric(difftime(closing_date, last_data_date, units = "weeks")), digits = 0))
   }
   
   #################################################
