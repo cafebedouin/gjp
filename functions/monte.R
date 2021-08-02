@@ -15,28 +15,9 @@
 # values are then returned to normal values using exponent and 
 # multiplied by the current price by the number of simulations
 # required in the script.
-#
-# Example of output:
-#
-# Treasury Yields for 10 Year for 2021-09-16 forecast:
-# ====================================================
-# Prob. | Bins 
-# ====================================================
-# 0.202 | Bin 1 - <1
-# 0.255 | Bin 2 - 1 to <=1.5
-# 0.286 | Bin 3 - 1.5+ to <2
-# 0.150 | Bin 4 - 2 to <=2.5
-# 0.107 | Bin 5 - 2.5+
-# ====================================================
-# Number of Monte Carlo simulations: 10000
 
 monte <- function(df,
-                  # part before for in 1st line in example above
-                  prob_results_title, # 
                   closing_date, # for question
-                  trading_days=7, # per week for daily
-                  freq="daily", # daily, weekly, monthly, quarterly, biyearly, yearly
-                  # for five bins
                   hands=10000,
                   bins) {
   
@@ -46,9 +27,7 @@ monte <- function(df,
   # Run the remaining_time function
   source("./functions/remaining_time.R")
   remaining_time <- remaining_time(df,
-                                   closing_date,
-                                   trading_days,
-                                   freq)
+                                   closing_date)
   
   # Format for probability functions
   source("./functions/probform.R")
@@ -77,6 +56,7 @@ monte <- function(df,
   }
   
   deck[!is.finite(deck)] <- 0
+  deck[is.na(deck)] <- 0
   
   # Calculate standard deviation (sig) and mean of deck (mu)
   sig <- sd(deck)
@@ -94,7 +74,7 @@ monte <- function(df,
   # Sort probabilities into bins
   source("./functions/sortbins.R")
   bins <- sortbins(bins,
-                 prob_calc)
+                   prob_calc)
   
   # print(bins)
   return(bins)

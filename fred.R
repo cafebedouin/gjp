@@ -69,6 +69,7 @@
 fred <- function(code, # FRED, e.g., SP500 is S&P 500 in FRED
                  begin_date, # For analysis, not question
                  closing_date, # for question
+                 todays_date,
                  bins,
                  # Type of analysis, simple historical, monte carlo, etc.
                  probability_type,
@@ -100,7 +101,7 @@ fred <- function(code, # FRED, e.g., SP500 is S&P 500 in FRED
   
   # Set todays_date
   todays_date <- Sys.Date()
-  
+
   # Set date for ten years ago, FRED often has a 10 year limit
   ten_years <- todays_date - 3652
   
@@ -170,7 +171,7 @@ fred <- function(code, # FRED, e.g., SP500 is S&P 500 in FRED
   df <- df[rev(order(df$date)),] 
 
   # Visually check columns, data types and data
-  glimpse(df)
+  # glimpse(df)
   
   # Writes csv file
   write.csv(df, file=paste0("./output/FRED-", 
@@ -186,23 +187,18 @@ fred <- function(code, # FRED, e.g., SP500 is S&P 500 in FRED
   
   if (probability_type == "simple") {
     source("./functions/simple_probability.R")
-    simple_probability(df, prob_results_title,
-                       closing_date, trading_days, freq, bins) }
+    return(simple_probability(df, closing_date, bins)) }
   
   # Simple walk through historical percentages to generate probabilities
   if (probability_type == "simple_percent") {
     source("./functions/simple_probability_percent.R")
-    simple_probability(df, prob_results_title,
-                       closing_date, trading_days, freq,
-                       bin1, bin2, bin3, bin4) }
+    return(simple_probability(df, closing_date, bins)) }
   
   # Simple Monte Carlo using historical period changes 
   # and number of hands to generate probabilities
   if (probability_type == "monte") {
     source("./functions/monte.R")
-    monte(df, prob_results_title,
-          closing_date, trading_days, 
-          freq, hands=100000, bins) }
+    return(monte(df, closing_date, hands=10000, bins)) }
   
   # Makes graphs
   if (graph == "yes") {

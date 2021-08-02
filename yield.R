@@ -99,16 +99,13 @@ yield <- function(closing_date,
   
   if (probability_type == "simple") {
     source("./functions/simple_probability.R")
-    simple_probability(df, prob_results_title,
-                       closing_date, trading_days, freq, bins) }
+    return(simple_probability(df, closing_date, bins)) }
     
   # Simple Monte Carlo using historical period changes 
   # and number of hands to generate probabilities
   if (probability_type == "monte") {
     source("./functions/monte.R")
-    monte(df, prob_results_title,
-          closing_date, trading_days, 
-          freq, hands=10000, bins) }
+    return(monte(df, closing_date, hands=10000, bins)) }
   
   if (graph == "yes") {
     source("./functions/graph.R")    

@@ -12,12 +12,7 @@
 # creates a probability table based on defined bins.
 
 simple_probability <- function(df,
-                               # part before for in 1st line in example above
-                               prob_results_title, # 
                                closing_date, # for question
-                               trading_days=7, # per week
-                               freq="daily", # daily, weekly, monthly, quarterly, biyearly, yearly
-                               # for five bins
                                bins) {
 
   #################################################
@@ -28,10 +23,7 @@ simple_probability <- function(df,
 
   # Run the remaining_time function
   source("./functions/remaining_time.R")
-  remaining_time <- remaining_time(df,
-                                   closing_date,
-                                   trading_days,
-                                   freq)
+  remaining_time <- remaining_time(df, closing_date)
   
   # Format for probability functions
   source("./functions/probform.R")
