@@ -13,8 +13,8 @@ closing_date <- seq(as.Date("2021-06-01", "%Y-%m-%d"),
                     by = "month", 
                     length.out = 5)
 
-View(closing_date)
-
+# View(closing_date)
+ 
 total <-0
 
 # This calls the function using different dates and returns a df
