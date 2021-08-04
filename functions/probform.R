@@ -14,9 +14,9 @@ probform <- function(df) {
   df <- df[rev(order(as.Date(df$date), na.last = NA)),]
   
   # Removes NAs if they appear in values column
-  df[!is.na(df[, 2]), ]
+  # df[!is.na(df[, 2]), ]
   
-  View(df) # for testing
+  # View(df) # for testing
   
   return(df)
 }

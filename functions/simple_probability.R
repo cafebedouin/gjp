@@ -20,14 +20,14 @@ simple_probability <- function(df,
   
   # Set todays_date
   todays_date <- Sys.Date()
-
-  # Run the remaining_time function
-  source("./functions/remaining_time.R")
-  remaining_time <- remaining_time(df, closing_date)
   
   # Format for probability functions
   source("./functions/probform.R")
   df <- probform(df)
+
+  # Run the remaining_time function
+  source("./functions/remaining_time.R")
+  remaining_time <- remaining_time(df, closing_date)
 
   # Setting most recent value, assuming decreasing order
   current_value <- as.numeric(df[1,2])

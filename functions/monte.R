@@ -24,14 +24,17 @@ monte <- function(df,
   # Set todays_date
   todays_date <- Sys.Date()
   
+  # Format for probability functions
+  source("./functions/probform.R")
+  df <- probform(df)
+  
   # Run the remaining_time function
   source("./functions/remaining_time.R")
   remaining_time <- remaining_time(df,
                                    closing_date)
   
-  # Format for probability functions
-  source("./functions/probform.R")
-  df <- probform(df)
+  # Replaces negative values with zero
+  df$value <- replace(df$value, df$value < 0,0) 
   
   # Setting most recent value, assuming decreasing order
   current_value <- as.numeric(df[1,2])
@@ -48,7 +51,7 @@ monte <- function(df,
     # Avoiding dividing by zero and negatives
     # since log normal needs positive values 
     if (df$value[i+remaining_time] <= 0) {
-      deck[i] <- 0
+      deck[i+remaining_time] <- 1
     } else {
       # Logarithmic prices are always in a standard distribution
       deck[i] <- log(df$value[i] / df$value[i+remaining_time])

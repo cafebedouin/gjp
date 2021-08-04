@@ -1,7 +1,7 @@
 # standist.R 
 #################################################
 # Description: Takes a two column data frame
-# with columns date (chronological), quant and 
+# with columns date (chronological), value and 
 # generates a projected mean increase for the 
 # forecast period, adds that increase to last 
 # value for the series, uses that projected mean 
@@ -13,7 +13,7 @@
 # projection period and bins in function call.
 
 standist <- function(filename, # Org and Question No.
-                     forecast_periods,   # How far ahead is the forecast based on data periods?
+                     closing_date,   # How far ahead is the forecast based on data periods?
                      outlier,
                      bins) {
   
@@ -22,8 +22,24 @@ standist <- function(filename, # Org and Question No.
   
   # Load data
   df <- read.csv(paste0("./data/", filename, ".csv"), skip=0, header=TRUE)
-
+  
+  # Format for probability functions
+  source("./functions/probform.R")
+  df <- probform(df)
+  
   View(df)
+  
+  # Run the remaining_time function
+  source("./functions/remaining_time.R")
+  remaining_time <- remaining_time(df,
+                                   closing_date)
+  
+  # View(remaining_time)
+  
+  # Change percentage to whole number for multiplication
+  if (mean(df$value) < 1) {
+    df$value <- df$value * 100
+  }
   
   # Drop outliers
   if (!is.null(outlier)) {
@@ -31,43 +47,46 @@ standist <- function(filename, # Org and Question No.
   }
   
   # Create a data frame
-  period_inc <- NULL
+  percentages <- NULL
   
   # Creates a dataframe of change in value that matches forecast period
-  for (i in 1:(length(df$quant) - forecast_periods)) {
-    period_inc[i] <- df$quant[i+forecast_periods] / df$quant[i]
+  for (i in 1:(length(df$value) - remaining_time)) {
+    # Assumes newest at bottom
+    percentages[i] <- log(df$value[i] / df$value[i+remaining_time])
   }
   
-  # Mean increase for similar periods over data available
-  mean_inc <- mean(period_inc)
+  View(percentages)
   
-  # Get the standard deviation of the data and increase it in proportion
-  df_sd <- sd(df$quant) * mean_inc
+  # Current value
+  current_value <- head(df$value, n=1)
+  # View(current_value)
   
-  # Creates a projected mean for the period being forecasted
-  df_adj_mean <- df$quant[length(df$quant)] * mean_inc
+  # Adjusted to mean for similar periods over data available
+  projected_mu <- current_value * exp(mean(percentages))
+  # View(projected_mu)
   
-  # Create a new data frame for probabilities
-  probability <- NULL
+  # Get the standard deviation of the data
+  projected_sig <- sum(projected_mu * exp(sd(percentages)) - projected_mu)  
+  # View(projected_sig)
+  
+  # Turns atomic vector bins into dataframe
+  bins <- as.data.frame(bins)
   
   # Pnorm catches left side probabilities, so 0 to first bin
   # and pops that into our probability table
-  probability[1] <- pnorm(bins[1], df_adj_mean, df_sd) 
+  bins$probs[1] <- pnorm(bins$bins[1], projected_mu, projected_sig) 
   
   # Skipping first bin, calculate probability of left of bin 
   # minus the probability of everything before previous bin
-  for (i in 2:length(bins)) {
-    probability[i] <- pnorm(bins[i], df_adj_mean, df_sd) - pnorm(bins[i-1], df_adj_mean, df_sd) 
+  for (i in 2:length(bins$bins)) {
+    bins$probs[i] <- pnorm(bins$bins[i], projected_mu, projected_sig) - pnorm(bins$bins[i-1], projected_mu, projected_sig) 
   }
   
+  # Round
+  bins$probs <- round(bins$probs, digits = 3)
+  cat(paste0("Projected mean: ", projected_mu, "\n",
+             "Standard deviation: ", projected_sig, "\n"))
+  
   # Tell me what the assumed mean was, standard deviation and probabilities
-  return(cat(paste0("Projected mean: ", df_adj_mean, "\n",
-                "Standard deviation: ", df_sd, "\n\n",
-                "Base rate probability: \n", 
-                "Bin 1: ", round(probability[1], digits = 3), "\n",
-                "Bin 2: ", round(probability[2], digits = 3), "\n",
-                "Bin 3: ", round(probability[3], digits = 3), "\n",
-                "Bin 4: ", round(probability[4], digits = 3), "\n",
-                "Bin 5: ", round(probability[5], digits = 3), "\n",
-                "\n")))
+  return(bins)
 }

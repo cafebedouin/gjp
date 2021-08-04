@@ -8,7 +8,7 @@ sortbins <- function(bins,
   library(stats) 
   sort(bins)
   bins <-data.frame(bins)
-  View(bins)
+  # View(bins)
   
   # Sort probabilities into bins
   for (i in 1:length(bins$bins)) {
