@@ -10,7 +10,7 @@
 
 source("fred.R")
 closing_date <- seq(as.Date("2021-06-01", "%Y-%m-%d"), 
-                    by = month, 
+                    by = "month", 
                     length.out = 5)
 
 View(closing_date)
@@ -24,7 +24,7 @@ total <-0
 for (i in 1:length(closing_date)) {
   threshold <- fred(code="TRUCKD11",
                     begin_date="2000-01-01", # For analysis, not question
-                    closing_date[i],
+                    closing_date = closing_date[i],
                     # Threshold value 
                     bins=c(120, Inf),
                     probability_type="monte")
