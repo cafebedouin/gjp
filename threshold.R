@@ -26,7 +26,7 @@ for (i in 1:length(closing_date)) {
                    closing_date = closing_date[i],
                    # Threshold value 
                    bins=c(12000, Inf),
-                   probability_type="simple")
+                   probability_type="monte")
   probs[i] <- threshold[2,2]
 }
 probs
