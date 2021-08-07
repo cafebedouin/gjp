@@ -8,27 +8,40 @@
 # date into a vector and sums it to assess the 
 # chance of hitting a threshold over a given period.
 
-source("fred.R")
-closing_date <- seq(as.Date("2021-06-01", "%Y-%m-%d"), 
-                    by = "month", 
-                    length.out = 5)
+source("csv-oil.R")
+closing_date <- seq(as.Date("2021-08-07", "%Y-%m-%d"), 
+                    by = "week", 
+                    length.out = 21)
 
 # View(closing_date)
  
-total <-0
+probs <-0
 
 # This calls the function using different dates and returns a df
 # with two columns: bins and probs. It then puts the probabilities
 # in calc and when finished going through all dates, sums the result.
 
 for (i in 1:length(closing_date)) {
-  threshold <- fred(code="TRUCKD11",
-                    begin_date="2000-01-01", # For analysis, not question
-                    closing_date = closing_date[i],
-                    # Threshold value 
-                    bins=c(120, Inf),
-                    probability_type="monte")
-  total[i] <- threshold[2,2]
+  threshold <- csv(begin_date = "1999-12-31", # For analysis, not question
+                   closing_date = closing_date[i],
+                   # Threshold value 
+                   bins=c(12000, Inf),
+                   probability_type="simple")
+  probs[i] <- threshold[2,2]
+}
+probs
+
+for (i in 1:length(probs)) {
+  probs[i] <- probs[i] / i  
 }
 
-sum(total)
+probs <- 1 - probs
+probs
+total <- probs[1]
+
+for (i in 2:length(probs)) {
+  total <- probs[i] * total 
+}
+total <- 1 - total
+total
+
